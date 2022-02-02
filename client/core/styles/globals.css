@@ -9,8 +9,7 @@ body {
   display: block;
   overflow-x: hidden;
   overflow-y: auto;
-  font-family: 'Open Sans';
-
+  font-family: "Roboto";
 }
 
 div {
@@ -36,7 +35,7 @@ a {
 }
 
 @media (max-width: 767px) {
-  .column-full{
+  .column-full {
     grid-column-end: span 12 !important;
   }
   .column {
@@ -57,8 +56,4 @@ a {
   }
 }
 
-@import "../../public/Open-sans/stylesheet.css";
-@import "../../public/Roboto/stylesheet.css";
-
-@import "slick-carousel/slick/slick.css";
-@import "slick-carousel/slick/slick-theme.css";
+@import "public/Roboto/stylesheet.css";
