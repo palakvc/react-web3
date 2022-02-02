@@ -1,13 +1,8 @@
 import clsx from "clsx";
 import React from "react";
 
-const gradient =
-  "bg-gradient-to-tl from-rose-500 via-fuchsia-600 to-indigo-500";
-
-const outline = `inline-block p-[2px] rounded-full ${gradient} text-white active:text-opacity-75 focus:outline-none focus:ring`;
-
-const styles: string = `${outline}`;
-const inputStyles: string = `rounded-full text-black m-0 p-2 outline-none`;
+const styles: string = `sublime-gd p-[1px] rounded-lg`;
+const inputStyles: string = `h-10 pr-10 placeholder-gray-500 rounded-lg text-gray-600 focus:z-10 p-2 outline-none focus:ring`;
 
 function Input(props: React.InputHTMLAttributes<HTMLInputElement>) {
   return (

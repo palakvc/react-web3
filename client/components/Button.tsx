@@ -18,7 +18,7 @@ function Button(
     >
       <span
         className={clsx(
-          `p-2 font-medium rounded-full hover:bg-transparent text-white`,
+          `p-2 font-medium rounded-full text-white`,
           {
             "bg-white text-black hover:text-white": variant === "outlined",
           }

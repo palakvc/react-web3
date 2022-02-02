@@ -33,7 +33,7 @@ function Header() {
   const isLoggedIn = false;
 
   return (
-    <header className="shadow-sm">
+    <header className="w-full shadow-md z-[100] bg-secondary fixed top-0">
       <div className="flex items-center justify-between h-32 max-w-screen-xl px-4 mx-auto">
         <div className="flex items-center space-x-4">
           <div className="text-center mx-8">
@@ -47,19 +47,13 @@ function Header() {
 
           <form className="mb-0 lg:flex">
             <div className="relative">
-              <div id="inputHolder" className="sublime-gd p-[1px] rounded-lg">
-                <input
-                  className="h-10 pr-10 placeholder-gray-300 rounded-lg text-gray-700 focus:z-10 p-2 outline-none focus:ring"
-                  placeholder="Search..."
-                  type="text"
-                />
-              </div>
+              <Input placeholder="Search..." type="text" />
 
               <button
                 className="absolute inset-y-0 right-0 p-2 mr-px text-gray-600 rounded-r-lg"
                 type="submit"
               >
-                <Search />
+                <Search className="text-gray-600" />
               </button>
             </div>
           </form>

@@ -1,12 +1,14 @@
 import React from "react";
 
-function SearchIcon(): JSX.Element {
+function SearchIcon(props: React.SVGProps<SVGSVGElement>): JSX.Element {
   return (
     <svg
-      className="w-5 h-5"
+      width={20}
+      height={20}
       fill="currentColor"
       viewBox="0 0 20 20"
       xmlns="http://www.w3.org/2000/svg"
+      {...props}
     >
       <path
         clip-rule="evenodd"
