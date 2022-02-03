@@ -4,12 +4,27 @@ import Input from "components/Input";
 import Search from "icons/SearchIcon";
 import Link from "next/link";
 import ThemeToggler from "./ThemeToggler";
-import React, { useEffect } from "react";
-import { RootState, useAppSelector } from "store";
+import React, { useEffect, useState } from "react";
+import { RootState, useAppDispatch, useAppSelector } from "store";
+import {
+  logoutUser,
+  setUserAuthentication,
+  setUserDetails,
+} from "store/authSlice";
+import { useRouter } from "next/router";
+import clsx from "clsx";
+import useClickOutside from "hooks/useClickOutside";
+import { shortenAddress } from "utils/commonUtils";
 
 type navItems = {
   href: string;
   title: string;
+};
+
+type dropdownItems = {
+  href?: string;
+  title: string;
+  fx?: () => void;
 };
 
 const navItems: navItems[] = [
@@ -32,11 +47,24 @@ const navItems: navItems[] = [
 ];
 
 function Header() {
-  const isLoggedIn: boolean = false;
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const [openProfileMenu, setOpenProfileMenu] = React.useState(false);
+  const dropdownRef = React.useRef<HTMLDivElement>(null);
+
+  useClickOutside(dropdownRef, () => {
+    if (openProfileMenu) {
+      setOpenProfileMenu(false);
+    }
+  });
 
   const globalObjects = useAppSelector(
     (state: RootState) => state.commonReducer.globalObjects
   );
+  const { isLoggedIn, userDetails } = useAppSelector(
+    ({ auth }: RootState) => auth
+  );
+  const { accountId } = userDetails;
   const ethereum = globalObjects?.ethereumObject;
   const provider = globalObjects?.provider;
 
@@ -55,6 +83,7 @@ function Header() {
       })
       .then((address: String[]) => {
         console.log("on load get account", address);
+        dispatch(setUserDetails({ accountId: address[0] }));
       });
 
     ethereum.on("chainChanged", onChainIdChange);
@@ -78,26 +107,44 @@ function Header() {
     const signInHash = await signer.signMessage(
       "Message For Signning to Artistics"
     );
+    dispatch(setUserDetails({ accountId: accounts[0], hash: signInHash }));
     console.log("accounts after clicking", accounts[0], signInHash);
   };
+
+  const toggleMenu = (): void => {
+    if (openProfileMenu) {
+      setOpenProfileMenu(false);
+    } else {
+      setOpenProfileMenu(true);
+    }
+  };
+
+  const handleLogout = (): void => {
+    console.log("called");
+    dispatch(logoutUser({}));
+    setOpenProfileMenu(false);
+  };
+
+  const dropdownItems: dropdownItems[] = [
+    {
+      title: "My Profile",
+      href: "/profile",
+    },
+    {
+      title: "Logout",
+      fx: handleLogout,
+    },
+  ];
 
   return (
     <header className="w-full bg-white dark:bg-black shadow-md z-[100] fixed top-0">
       <div className="flex items-center justify-between h-36 max-w-screen-xl px-4 mx-auto">
-        <div className="flex flex-1 max-w-320 items-center space-x-4">
+        <div className="flex flex-1 max-w-320 items-center space-x-4 w-1/3">
           <div className="mx-4 min-w-64 w-64">
             <a href="/">
               <img src="/images/logo.svg" />
             </a>
           </div>
-          {/* <div className="text-center mx-8">
-            <span className="text-24 sublime-gd bg-clip-text text-transparent">
-              A
-            </span>
-            <span className="sublime-gd bg-clip-text text-transparent">
-              RTISTIC
-            </span>
-          </div> */}
 
           <div className="ml-12 relative flex w-full">
             <Input placeholder="Search..." type="text" className="w-full" />
@@ -111,9 +158,9 @@ function Header() {
           </div>
         </div>
 
-        <nav className="items-center justify-center space-x-8 font-medium lg:flex lg:flex-1 lg:w-0">
+        <nav className="items-center justify-center space-x-8 font-medium w-1/3">
           {navItems.map(({ href, title }) => (
-            <Link href={href}>
+            <Link href={href} key={title}>
               <span className="cursor-pointer text-gray-800 dark:text-gray-500 dark:hover:text-white hover:border-sublime hover:border-b-2">
                 {title}
               </span>
@@ -121,10 +168,45 @@ function Header() {
           ))}
         </nav>
 
-        <div className="space-x-4 flex items-center">
+        <div className="space-x-4 flex items-center w-1/4 justify-end">
           <ThemeToggler />
           {isLoggedIn ? (
-            <IconButton>Profile</IconButton>
+            <div className="relative">
+              <div className="" ref={dropdownRef}>
+                <div className="flex items-center">
+                  <Button
+                    onClick={() => {
+                      toggleMenu();
+                    }}
+                    variant="outlined"
+                  >
+                    <span className="mx-2 text-gray-700 dark:text-gray-200">
+                      {shortenAddress(accountId)}
+                    </span>
+                  </Button>{" "}
+                </div>
+                <div
+                  className={clsx(
+                    "absolute right-0 mt-2 bg-white dark:bg-darkBg2 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg z-20 w-136",
+                    { ["hidden"]: !openProfileMenu }
+                  )}
+                >
+                  {dropdownItems.map(({ href = "#", title, fx }, i) => (
+                    <div
+                      key={title}
+                      className={
+                        "flex items-center px-4 py-3 border-gray-300 dark:border-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer text-gray-600 dark:text-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-300 select-none"
+                      }
+                      onClick={() => {
+                        fx ? fx() : router.push(href);
+                      }}
+                    >
+                      {title}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           ) : (
             <Button variant="outlined" onClick={onConnectToMetamask}>
               <div className="flex items-center">

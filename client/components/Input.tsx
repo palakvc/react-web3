@@ -6,7 +6,8 @@ const inputStyles: string = `border border-gray-300 pr-10 dark:bg-darkPrimary da
 
 function Input(
   props: React.InputHTMLAttributes<HTMLInputElement> &
-    React.TextareaHTMLAttributes<HTMLTextAreaElement>
+    React.TextareaHTMLAttributes<HTMLTextAreaElement>,
+  ref: React.ForwardedRef<HTMLInputElement & HTMLTextAreaElement>
 ) {
   return (
     <>
@@ -18,15 +19,17 @@ function Input(
             "h-auto",
             props.className && props.className
           )}
+          ref={ref}
         />
       ) : (
         <input
           {...props}
           className={clsx(inputStyles, props.className && props.className)}
+          ref={ref}
         />
       )}
     </>
   );
 }
 
-export default Input;
+export default React.forwardRef(Input);

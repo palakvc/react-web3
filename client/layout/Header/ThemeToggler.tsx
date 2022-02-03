@@ -42,7 +42,7 @@ function ThemeToggler() {
   };
 
   return (
-    <div>
+    <div className="mx-4">
       {isDarkMode ? (
         <button
           className="rounded-full bg-transparent p-1"

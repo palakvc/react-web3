@@ -1,7 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 
-const styles = `inline-block p-2 rounded-lg sublime-gd hover:text-white active:text-opacity-75 focus:outline-none focus:ring`;
+const styles = `inline-block p-2 rounded-lg sublime-gd hover:text-white active:text-opacity-75 focus:outline-none`;
 
 function IconButton(
   props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
