@@ -23,6 +23,7 @@ module.exports = {
         transparent: "transparent",
         primary: "#091f5d",
         secondary: "#e3e0e3",
+        lightBg1: "#f5f5f7",
         // darkPrimary: "#1e242a",
         darkPrimary: "#131415",
         darkBg1: "#131415",

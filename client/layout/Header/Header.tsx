@@ -82,30 +82,33 @@ function Header() {
   };
 
   return (
-    <header className="w-full bg-white dark:bg-black shadow-md z-[100] bg-secondary fixed top-0">
+    <header className="w-full bg-white dark:bg-black shadow-md z-[100] fixed top-0">
       <div className="flex items-center justify-between h-36 max-w-screen-xl px-4 mx-auto">
-        <div className="flex items-center space-x-4">
-          <div className="text-center mx-8">
+        <div className="flex flex-1 max-w-320 items-center space-x-4">
+          <div className="mx-4 min-w-64 w-64">
+            <a href="/">
+              <img src="/images/logo.svg" />
+            </a>
+          </div>
+          {/* <div className="text-center mx-8">
             <span className="text-24 sublime-gd bg-clip-text text-transparent">
               A
             </span>
             <span className="sublime-gd bg-clip-text text-transparent">
               RTISTIC
             </span>
+          </div> */}
+
+          <div className="ml-12 relative flex w-full">
+            <Input placeholder="Search..." type="text" className="w-full" />
+
+            <button
+              className="absolute inset-y-0 right-0 p-2 mr-px text-gray-600"
+              type="submit"
+            >
+              <Search className="text-gray-600" />
+            </button>
           </div>
-
-          <form className="mb-0 lg:flex">
-            <div className="relative">
-              <Input placeholder="Search..." type="text" />
-
-              <button
-                className="absolute inset-y-0 right-0 p-2 mr-px text-gray-600"
-                type="submit"
-              >
-                <Search className="text-gray-600" />
-              </button>
-            </div>
-          </form>
         </div>
 
         <nav className="items-center justify-center space-x-8 font-medium lg:flex lg:flex-1 lg:w-0">
@@ -135,6 +138,7 @@ function Header() {
           )}
         </div>
       </div>
+      <div className="w-full sublime-gd h-[2px]" />
     </header>
   );
 }
