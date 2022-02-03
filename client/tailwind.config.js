@@ -7,7 +7,7 @@ module.exports = {
   ],
   prefix: "",
   important: false,
-  darkMode: "media",
+  darkMode: "class",
   separator: ":",
   theme: {
     extend: {
@@ -22,7 +22,13 @@ module.exports = {
       colors: {
         transparent: "transparent",
         primary: "#091f5d",
-        black: "#22292F",
+        secondary: "#e3e0e3",
+        // darkPrimary: "#1e242a",
+        darkPrimary: "#131415",
+        darkBg1: "#131415",
+        darkBg2: "#292929",
+        black: "#1e1e1e",
+        darkGray: "#22292F",
         white: "#FFF",
         grey: {
           50: "#FAFAFA",

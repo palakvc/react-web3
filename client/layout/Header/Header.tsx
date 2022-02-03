@@ -3,6 +3,7 @@ import IconButton from "components/IconButton";
 import Input from "components/Input";
 import Search from "icons/SearchIcon";
 import Link from "next/link";
+import ThemeToggler from "./ThemeToggler";
 import React, { useEffect } from "react";
 import { RootState, useAppSelector } from "store";
 
@@ -31,7 +32,7 @@ const navItems: navItems[] = [
 ];
 
 function Header() {
-  const isLoggedIn = false;
+  const isLoggedIn: boolean = false;
 
   const globalObjects = useAppSelector(
     (state: RootState) => state.commonReducer.globalObjects
@@ -81,8 +82,8 @@ function Header() {
   };
 
   return (
-    <header className="shadow-sm">
-      <div className="flex items-center justify-between h-32 max-w-screen-xl px-4 mx-auto">
+    <header className="w-full bg-white dark:bg-black shadow-md z-[100] bg-secondary fixed top-0">
+      <div className="flex items-center justify-between h-36 max-w-screen-xl px-4 mx-auto">
         <div className="flex items-center space-x-4">
           <div className="text-center mx-8">
             <span className="text-24 sublime-gd bg-clip-text text-transparent">
@@ -95,19 +96,13 @@ function Header() {
 
           <form className="mb-0 lg:flex">
             <div className="relative">
-              <div id="inputHolder" className="sublime-gd p-[1px] rounded-lg">
-                <input
-                  className="h-10 pr-10 placeholder-gray-300 rounded-lg text-gray-700 focus:z-10 p-2 outline-none focus:ring"
-                  placeholder="Search..."
-                  type="text"
-                />
-              </div>
+              <Input placeholder="Search..." type="text" />
 
               <button
-                className="absolute inset-y-0 right-0 p-2 mr-px text-gray-600 rounded-r-lg"
+                className="absolute inset-y-0 right-0 p-2 mr-px text-gray-600"
                 type="submit"
               >
-                <Search />
+                <Search className="text-gray-600" />
               </button>
             </div>
           </form>
@@ -115,19 +110,28 @@ function Header() {
 
         <nav className="items-center justify-center space-x-8 font-medium lg:flex lg:flex-1 lg:w-0">
           {navItems.map(({ href, title }) => (
-            <Link href={href} key={title}>
-              <span className="cursor-pointer text-gray-800 hover:border-sublime hover:border-b-2">
+            <Link href={href}>
+              <span className="cursor-pointer text-gray-800 dark:text-gray-500 dark:hover:text-white hover:border-sublime hover:border-b-2">
                 {title}
               </span>
             </Link>
           ))}
         </nav>
 
-        <div className="items-center space-x-4 lg:flex">
+        <div className="space-x-4 flex items-center">
+          <ThemeToggler />
           {isLoggedIn ? (
             <IconButton>Profile</IconButton>
           ) : (
-            <Button onClick={onConnectToMetamask}>Connect with Metamask</Button>
+            <Button variant="outlined" onClick={onConnectToMetamask}>
+              <div className="flex items-center">
+                <img
+                  src="/images/MetamaskLogo.svg"
+                  className="mx-1 w-auto h-[26px]"
+                />
+                Connect with Metamask
+              </div>
+            </Button>
           )}
         </div>
       </div>
