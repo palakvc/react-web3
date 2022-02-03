@@ -3,8 +3,9 @@ import IconButton from "components/IconButton";
 import Input from "components/Input";
 import Search from "icons/SearchIcon";
 import Link from "next/link";
-import React from "react";
 import ThemeToggler from "./ThemeToggler";
+import React, { useEffect } from "react";
+import { RootState, useAppSelector } from "store";
 
 type navItems = {
   href: string;
@@ -32,6 +33,53 @@ const navItems: navItems[] = [
 
 function Header() {
   const isLoggedIn: boolean = false;
+
+  const globalObjects = useAppSelector(
+    (state: RootState) => state.commonReducer.globalObjects
+  );
+  const ethereum = globalObjects?.ethereumObject;
+  const provider = globalObjects?.provider;
+
+  const onChainIdChange = (chainId: String) => {
+    window.location.reload();
+  };
+
+  // const onAccountChange = (accounts: String[]) => {
+  //   console.log("on account Change", accounts);
+  // };
+
+  useEffect(() => {
+    ethereum
+      .request({
+        method: "eth_accounts",
+      })
+      .then((address: String[]) => {
+        console.log("on load get account", address);
+      });
+
+    ethereum.on("chainChanged", onChainIdChange);
+    // ethereum.on("accountsChanged", onAccountChange);
+    return () => {
+      // ethereum.removeListener("accountsChanged", onAccountChange);
+      ethereum.removeListener("chainChanged", onChainIdChange);
+    };
+  }, [ethereum]);
+
+  const onConnectToMetamask = async () => {
+    const accounts = await ethereum.request({
+      method: "eth_requestAccounts",
+      params: [
+        {
+          eth_accounts: {},
+        },
+      ],
+    });
+    const signer = provider.getSigner();
+    const signInHash = await signer.signMessage(
+      "Message For Signning to Artistics"
+    );
+    console.log("accounts after clicking", accounts[0], signInHash);
+  };
 
   return (
     <header className="w-full bg-white dark:bg-black shadow-md z-[100] bg-secondary fixed top-0">
@@ -75,7 +123,7 @@ function Header() {
           {isLoggedIn ? (
             <IconButton>Profile</IconButton>
           ) : (
-            <Button variant="outlined">
+            <Button variant="outlined" onClick={onConnectToMetamask}>
               <div className="flex items-center">
                 <img
                   src="/images/MetamaskLogo.svg"
