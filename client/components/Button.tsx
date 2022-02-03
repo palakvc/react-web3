@@ -1,9 +1,7 @@
 import React from "react";
 import clsx from "clsx";
 
-const outline = `inline-block p-2 rounded-lg sublime-gd hover:text-white active:text-opacity-75 focus:outline-none`;
-
-const styles: string = `${outline}`;
+const styles: string = ` p-[1px] rounded-32 sublime-gd active:text-opacity-75 focus:outline-none`;
 
 function Button(
   props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
@@ -18,9 +16,10 @@ function Button(
     >
       <span
         className={clsx(
-          `p-2 font-medium rounded-full text-white`,
+          `block p-2 font-medium rounded-32 hover:bg-transparent`,
           {
-            "bg-white text-black hover:text-white": variant === "outlined",
+            "bg-transparent text-white dark:bg-darkPrimary dark:text-white":
+              variant === "outlined",
           }
         )}
       >

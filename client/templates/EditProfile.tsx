@@ -1,4 +1,5 @@
 import IconButton from "components/IconButton";
+import Input from "components/Input";
 import AtEmailIcon from "icons/AtEmailIcon";
 import EyeIcon from "icons/EyeIcon";
 import PencilIcon from "icons/PencilIcon";
@@ -21,6 +22,24 @@ function EditProfile(props: IEditProfile): JSX.Element {
             "url(https://dpz0n88ffnk83.cloudfront.net/cover/default-cover.jpg)",
         }}
       >
+        <label htmlFor="cover-picture">
+          <input
+            accept="image/*"
+            id="cover-picture"
+            multiple
+            type="file"
+            hidden
+            name="src"
+            onChange={handleChange}
+            ref={coverRef}
+          />
+        </label>
+        <button
+          className="p-4 rounded-full bg-white absolute right-12 bottom-12 dark:bg-gray-700 "
+          onClick={() => coverRef!.current!.click()}
+        >
+          <PencilIcon className="text-gray-600 dark:text-white" />
+        </button>
         <div className="absolute left-32 -bottom-16">
           <div className="relative">
             <label htmlFor="profile-picture">
@@ -41,10 +60,10 @@ function EditProfile(props: IEditProfile): JSX.Element {
               className=" object-cover w-96 h-96 mx-auto rounded-full shadow-xl"
             />
             <button
-              className="p-4 rounded-full bg-white absolute right-12 bottom-0"
+              className="p-4 rounded-full bg-white absolute right-12 bottom-0 dark:bg-gray-700"
               onClick={() => profilePicRef!.current!.click()}
             >
-              <PencilIcon className="text-gray-600" />
+              <PencilIcon className="text-gray-600 dark:text-white" />
             </button>
           </div>
         </div>
@@ -52,7 +71,7 @@ function EditProfile(props: IEditProfile): JSX.Element {
       <div id="profile-section" className=" mt-12 w-full">
         <form
           action=""
-          className=" shadow-2xl bg-white mx-auto p-16 rounded-lg mt-8 mb-0 space-y-4 "
+          className=" shadow-lg bg-white dark:bg-darkBg2 mx-auto p-16 rounded-lg mt-8 mb-0 space-y-4 "
         >
           <div>
             <label
@@ -62,9 +81,9 @@ function EditProfile(props: IEditProfile): JSX.Element {
               Username
             </label>
 
-            <input
+            <Input
               type="text"
-              className="w-full p-8 pr-12 border-gray-200 rounded-lg shadow-sm outline-none focus:ring border-1"
+              className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
               placeholder="Enter Username"
               name="username"
             />
@@ -77,10 +96,10 @@ function EditProfile(props: IEditProfile): JSX.Element {
               Full Name
             </label>
 
-            <input
+            <Input
               type="text"
               name="fullname"
-              className="w-full p-8 pr-12 border-gray-200 rounded-lg shadow-sm outline-none focus:ring border-1"
+              className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
               placeholder="Enter Name"
             />
           </div>
@@ -93,9 +112,9 @@ function EditProfile(props: IEditProfile): JSX.Element {
             </label>
 
             <div className="relative">
-              <input
+              <Input
                 type="email"
-                className="w-full p-8 pr-12 border-gray-200 rounded-lg shadow-sm outline-none focus:ring border-1"
+                className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
                 placeholder="Enter email"
                 name="email"
               />
@@ -108,35 +127,16 @@ function EditProfile(props: IEditProfile): JSX.Element {
 
           <div>
             <label
-              htmlFor="password"
-              className="font-medium text-gray-600 inline-block mb-4"
-            >
-              Password
-            </label>
-            <div className="relative">
-              <input
-                type="password"
-                className="w-full p-8 pr-12 border-gray-200 rounded-lg shadow-sm outline-none focus:ring border-1"
-                placeholder="Enter password"
-                name="password"
-              />
-
-              <span className="absolute inset-y-0 inline-flex items-center right-4">
-                <EyeIcon className="text-gray-600" />
-              </span>
-            </div>
-          </div>
-          <div>
-            <label
               htmlFor="email"
               className="font-medium text-gray-600 inline-block mb-4"
             >
               Bio
             </label>
 
-            <textarea
+            <Input
+              rows={5}
               name="bio"
-              className="w-full p-8 pr-12 border-gray-200 rounded-lg shadow-sm outline-none focus:ring border-1"
+              className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
               placeholder="Describe Yourself"
             />
           </div>

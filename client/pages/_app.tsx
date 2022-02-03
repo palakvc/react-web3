@@ -1,8 +1,9 @@
 import "../styles/globals.css";
+import React from "react";
 import { Provider } from "react-redux";
 import type { AppProps } from "next/app";
 import { store } from "store";
-import React from "react";
+import Layout from "layout/Layout";
 
 interface IComponent {
   Component: {
@@ -13,8 +14,11 @@ interface IComponent {
 function MyApp({ Component, pageProps }: AppProps & IComponent) {
   const getLayout =
     Component.getLayout || (((page: JSX.Element) => page) as React.ReactNode);
+
   return (
-    <Provider store={store}>{getLayout(<Component {...pageProps} />)}</Provider>
+    <Provider store={store}>
+      <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
+    </Provider>
   );
 }
 
