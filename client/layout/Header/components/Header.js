@@ -5,7 +5,7 @@ import styled from "styled-components";
 import useSWR from "swr";
 import { Item } from "@react-stately/collections";
 import { Container } from "components/Container";
-import NavItems from "./components/NavItems";
+import NavItems from "./NavItems";
 import { Button } from "components/Button";
 import MenuButton from "components/Menu";
 import { CartMenuButton, CartOrderItem } from "components/Cart";

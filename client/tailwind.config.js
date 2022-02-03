@@ -7,6 +7,7 @@ module.exports = {
   ],
   prefix: "",
   important: false,
+  darkMode: "media",
   separator: ":",
   theme: {
     extend: {
@@ -465,7 +466,9 @@ module.exports = {
         4: ".4rem",
         6: ".6rem",
         8: ".8rem",
+        10: "8rem",
         12: "1.2rem",
+        14: "1.4rem",
         16: "1.6rem",
         20: "2rem",
         24: "2.4rem",
