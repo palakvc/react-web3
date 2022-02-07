@@ -22,9 +22,12 @@ module.exports = {
       colors: {
         transparent: "transparent",
         primary: "#091f5d",
-        secondary: "#e3e0e3",
+        // secondary: "#e3e0e3",
+        secondary: "#546681",
         lightBg1: "#f5f5f7",
         // darkPrimary: "#1e242a",
+        darkTextPrimary: "#e1e1e1",
+        darkTextSecondary: "#a2a2a2",
         darkPrimary: "#131415",
         darkBg1: "#131415",
         darkBg2: "#292929",
@@ -408,6 +411,7 @@ module.exports = {
         20: "2rem",
         24: "2.4rem",
         28: "2.8rem",
+        30: "3.0rem",
         32: "3.2rem",
         36: "3.6rem",
         40: "4rem",
@@ -579,11 +583,14 @@ module.exports = {
         ],
       },
       fontSize: {
-        xs: "1.2rem", // 12px
-        sm: "2.4rem", // 24px
-        base: "1.6rem", // 16px
-        lg: "1.8rem", // 18px
-        xl: "2rem", // 20px
+        // xs: "1.2rem", // 12px
+        // sm: "1.4rem", // 24px
+        // lg: "1.8rem", // 18px
+        // xl: "2rem", // 20px
+        xs: ".75rem",
+        sm: ".875rem",
+        base: "1rem", // 16px
+        tiny: ".875rem",
         "2xl": "2.4rem", // 24px
         "3xl": "3rem", // 30px
         "4xl": "3.6rem", // 36px
@@ -848,5 +855,8 @@ module.exports = {
     wordBreak: ["responsive"],
     zIndex: ["responsive"],
   },
-  plugins: [],
+  plugins: [
+    require("@tailwindcss/line-clamp"),
+    require("@tailwindcss/aspect-ratio"),
+  ],
 };

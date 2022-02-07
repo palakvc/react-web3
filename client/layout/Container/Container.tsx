@@ -6,7 +6,7 @@ interface IContainer {
 
 function Container(props: IContainer) {
   const { children } = props;
-  return <div className="mt-32 mx-auto max-w-xl p-12">{children}</div>;
+  return <div className="mt-32 mx-auto max-w-xl p-8">{children}</div>;
 }
 
 export default Container;

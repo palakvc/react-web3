@@ -1,6 +1,6 @@
-import Button from "components/Button";
-import IconButton from "components/IconButton";
-import Input from "components/Input";
+import Button from "components/Button/Button";
+import IconButton from "components/IconButton/IconButton";
+import Input from "components/Input/Input";
 import Search from "icons/SearchIcon";
 import Link from "next/link";
 import ThemeToggler from "./ThemeToggler";
@@ -14,7 +14,9 @@ import {
 import { useRouter } from "next/router";
 import clsx from "clsx";
 import useClickOutside from "hooks/useClickOutside";
-import { shortenAddress } from "utils/commonUtils";
+import { formatAddress, shortenAddress } from "utils/commonUtils";
+import User from "icons/User";
+import Avatar from "components/Avatar/Avatar";
 
 type navItems = {
   href: string;
@@ -30,19 +32,19 @@ type dropdownItems = {
 const navItems: navItems[] = [
   {
     title: "Marketplace",
-    href: "",
+    href: "/",
   },
   {
     title: "Spotlight",
-    href: "",
+    href: "/",
   },
   {
     title: "Blog",
-    href: "",
+    href: "/",
   },
   {
     title: "FAQ",
-    href: "",
+    href: "/",
   },
 ];
 
@@ -64,7 +66,7 @@ function Header() {
   const { isLoggedIn, userDetails } = useAppSelector(
     ({ auth }: RootState) => auth
   );
-  const { accountId } = userDetails;
+  const { accountId, username, profileImage } = userDetails;
   const ethereum = globalObjects?.ethereumObject;
   const provider = globalObjects?.provider;
 
@@ -72,9 +74,9 @@ function Header() {
     window.location.reload();
   };
 
-  // const onAccountChange = (accounts: String[]) => {
-  //   console.log("on account Change", accounts);
-  // };
+  const onAccountChange = (accounts: String[]) => {
+    console.log("on account Change", accounts);
+  };
 
   useEffect(() => {
     ethereum
@@ -83,11 +85,14 @@ function Header() {
       })
       .then((address: String[]) => {
         console.log("on load get account", address);
-        dispatch(setUserDetails({ accountId: address[0] }));
+        if (address.length > 0) {
+          // dispatch(setUserDetails({ accountId: address[0] }));
+        }
       });
 
+    ethereum.on("accountsChanged", onAccountChange);
+
     ethereum.on("chainChanged", onChainIdChange);
-    // ethereum.on("accountsChanged", onAccountChange);
     return () => {
       // ethereum.removeListener("accountsChanged", onAccountChange);
       ethereum.removeListener("chainChanged", onChainIdChange);
@@ -158,7 +163,7 @@ function Header() {
           </div>
         </div>
 
-        <nav className="items-center justify-center space-x-8 font-medium w-1/3">
+        <nav className="flex items-center justify-center space-x-8 font-medium w-1/3">
           {navItems.map(({ href, title }) => (
             <Link href={href} key={title}>
               <span className="cursor-pointer text-gray-800 dark:text-gray-500 dark:hover:text-white hover:border-sublime hover:border-b-2">
@@ -171,7 +176,8 @@ function Header() {
         <div className="space-x-4 flex items-center w-1/4 justify-end">
           <ThemeToggler />
           {isLoggedIn ? (
-            <div className="relative">
+            <div className="relative flex items-center">
+              <Avatar src={profileImage} />
               <div className="" ref={dropdownRef}>
                 <div className="flex items-center">
                   <Button
@@ -181,7 +187,7 @@ function Header() {
                     variant="outlined"
                   >
                     <span className="mx-2 text-gray-700 dark:text-gray-200">
-                      {shortenAddress(accountId)}
+                      {username ? username : shortenAddress(accountId)}
                     </span>
                   </Button>{" "}
                 </div>
@@ -191,6 +197,15 @@ function Header() {
                     { ["hidden"]: !openProfileMenu }
                   )}
                 >
+                  {accountId && (
+                    <div
+                      className={
+                        "font-medium flex items-center px-4 py-3 border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-gray-100 select-none"
+                      }
+                    >
+                      {formatAddress(accountId)}
+                    </div>
+                  )}
                   {dropdownItems.map(({ href = "#", title, fx }, i) => (
                     <div
                       key={title}
@@ -199,6 +214,7 @@ function Header() {
                       }
                       onClick={() => {
                         fx ? fx() : router.push(href);
+                        setOpenProfileMenu(false);
                       }}
                     >
                       {title}
@@ -208,15 +224,17 @@ function Header() {
               </div>
             </div>
           ) : (
-            <Button variant="outlined" onClick={onConnectToMetamask}>
-              <div className="flex items-center">
-                <img
-                  src="/images/MetamaskLogo.svg"
-                  className="mx-1 w-auto h-[26px]"
-                />
-                Connect with Metamask
-              </div>
-            </Button>
+            <div className="py-2">
+              <Button variant="outlined" onClick={onConnectToMetamask}>
+                <div className="flex items-center">
+                  <img
+                    src="/images/MetamaskLogo.svg"
+                    className="mx-1 w-auto h-[26px]"
+                  />
+                  <div className="hidden md:flex">Connect Wallet</div>
+                </div>
+              </Button>
+            </div>
           )}
         </div>
       </div>

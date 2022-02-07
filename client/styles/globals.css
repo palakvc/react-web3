@@ -13,6 +13,7 @@
     rgb(99, 102, 241)
   );
   --dark-bg: #1e1e1e;
+  --dark-fg: #a2a2a2
 
   --light-bg: #f5f5f7;
   /* --scroll: linear-gradient(
@@ -35,6 +36,7 @@ body {
 
 .dark {
   background-color: var(--dark-bg);
+  color:var(--dark-fg)
 }
 
 a {
@@ -52,8 +54,11 @@ a {
 }
 
 /* Track */
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track[data-theme='light'] {
   background: #fff;
+}
+::-webkit-scrollbar-track[data-theme='dark'] {
+  background: var(--dark-bg);
 }
 
 /* Handle */
@@ -67,11 +72,6 @@ a {
   background: var(--scroll);
 }
 
-@media (prefers-color-scheme: dark) {
-  ::-webkit-scrollbar-track {
-    background: var(--dark-bg);
-  }
-}
 
 @tailwind base;
 @tailwind components;
