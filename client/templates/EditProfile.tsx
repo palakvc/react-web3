@@ -1,25 +1,87 @@
-import IconButton from "components/IconButton";
-import Input from "components/Input";
+import Input from "components/Input/Input";
 import AtEmailIcon from "icons/AtEmailIcon";
-import EyeIcon from "icons/EyeIcon";
 import PencilIcon from "icons/PencilIcon";
+import withAuth from "layout/AuthRoute";
 import React from "react";
+import { useForm } from "react-hook-form";
+import { useAppDispatch, useAppSelector } from "store";
+import { IUserDetails, setUserDetails } from "store/authSlice";
+import { toBlob } from "utils/commonUtils";
 
-interface IEditProfile {}
+interface IEditProfile extends IUserDetails {}
 
-function EditProfile(props: IEditProfile): JSX.Element {
+const defaultCover =
+  "https://dpz0n88ffnk83.cloudfront.net/cover/default-cover.jpg";
+const defaultProfile = "https://www.hyperui.dev/photos/man-4.jpeg";
+
+function EditProfile(
+  props: IEditProfile & React.ComponentProps<any>
+): JSX.Element {
+  const dispatch = useAppDispatch();
+  const { userDetails } = useAppSelector(({ auth }) => auth);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<IEditProfile>({ defaultValues: userDetails });
+
   const profilePicRef = React.useRef<HTMLInputElement>(null);
   const coverRef = React.useRef<HTMLInputElement>(null);
 
-  const handleChange = () => {};
+  const [profileImage, setProfileImage] = React.useState<File | string | null>(
+    null
+  );
+  const [coverImage, setCoverImage] = React.useState<File | string | null>(
+    null
+  );
+
+  React.useEffect(() => {
+    if (userDetails.profileImage) {
+      setProfileImage(userDetails.profileImage);
+    }
+    if (userDetails.coverImage) {
+      setCoverImage(userDetails.coverImage);
+    }
+  }, [userDetails]);
+
+  const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
+    const target = ev.target;
+    const { name, files } = target;
+    const file = files?.[0];
+
+    if (file && name === "cover") {
+      setCoverImage(file);
+    } else if (file && name === "profile") {
+      setProfileImage(file);
+    }
+  };
+
+  const onSubmit = (data: IEditProfile) => {
+    const payload: IEditProfile = {
+      ...data,
+      profileImage:
+        typeof profileImage === "string" ? profileImage : toBlob(profileImage),
+      coverImage:
+        typeof coverImage === "string" ? coverImage : toBlob(coverImage),
+    };
+    dispatch(setUserDetails(payload));
+    console.log(data);
+  };
 
   return (
     <div className="w-full flex flex-wrap justify-center items-center">
       <div
-        className="sublime-gd rounded-lg p-16 w-full h-[298px] relative text-center"
+        className="sublime-gd rounded-lg p-16 w-full h-[298px] relative text-center bg-cover bg-no-repeat"
         style={{
-          backgroundImage:
-            "url(https://dpz0n88ffnk83.cloudfront.net/cover/default-cover.jpg)",
+          backgroundImage: `url(${
+            coverImage
+              ? typeof coverImage === "string"
+                ? coverImage
+                : toBlob(coverImage)
+              : defaultCover
+          })`,
         }}
       >
         <label htmlFor="cover-picture">
@@ -29,7 +91,7 @@ function EditProfile(props: IEditProfile): JSX.Element {
             multiple
             type="file"
             hidden
-            name="src"
+            name="cover"
             onChange={handleChange}
             ref={coverRef}
           />
@@ -40,7 +102,7 @@ function EditProfile(props: IEditProfile): JSX.Element {
         >
           <PencilIcon className="text-gray-600 dark:text-white" />
         </button>
-        <div className="absolute left-32 -bottom-16">
+        <div className="absolute left-32 -bottom-16 ring-2 ring-white bg-white dark:ring-black dark:bg-black rounded-full p-1">
           <div className="relative">
             <label htmlFor="profile-picture">
               <input
@@ -49,13 +111,19 @@ function EditProfile(props: IEditProfile): JSX.Element {
                 multiple
                 type="file"
                 hidden
-                name="src"
+                name="profile"
                 onChange={handleChange}
                 ref={profilePicRef}
               />
             </label>
             <img
-              src="https://www.hyperui.dev/photos/man-4.jpeg"
+              src={
+                profileImage
+                  ? typeof profileImage === "string"
+                    ? profileImage
+                    : toBlob(profileImage)
+                  : defaultProfile
+              }
               alt=""
               className=" object-cover w-96 h-96 mx-auto rounded-full shadow-xl"
             />
@@ -70,12 +138,12 @@ function EditProfile(props: IEditProfile): JSX.Element {
       </div>
       <div id="profile-section" className=" mt-12 w-full">
         <form
-          action=""
+          onSubmit={handleSubmit(onSubmit)}
           className=" shadow-lg bg-white dark:bg-darkBg2 mx-auto p-16 rounded-lg mt-8 mb-0 space-y-4 "
         >
           <div>
             <label
-              htmlFor="email"
+              htmlFor="username"
               className="font-medium text-gray-600 inline-block mb-4"
             >
               Username
@@ -85,12 +153,12 @@ function EditProfile(props: IEditProfile): JSX.Element {
               type="text"
               className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
               placeholder="Enter Username"
-              name="username"
+              {...register("username")}
             />
           </div>
           <div>
             <label
-              htmlFor="email"
+              htmlFor="fullname"
               className="font-medium text-gray-600 inline-block mb-4"
             >
               Full Name
@@ -98,7 +166,7 @@ function EditProfile(props: IEditProfile): JSX.Element {
 
             <Input
               type="text"
-              name="fullname"
+              {...register("fullname")}
               className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
               placeholder="Enter Name"
             />
@@ -116,7 +184,7 @@ function EditProfile(props: IEditProfile): JSX.Element {
                 type="email"
                 className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
                 placeholder="Enter email"
-                name="email"
+                {...register("email")}
               />
 
               <span className="absolute inset-y-0 inline-flex items-center right-4">
@@ -127,7 +195,7 @@ function EditProfile(props: IEditProfile): JSX.Element {
 
           <div>
             <label
-              htmlFor="email"
+              htmlFor="bio"
               className="font-medium text-gray-600 inline-block mb-4"
             >
               Bio
@@ -135,7 +203,7 @@ function EditProfile(props: IEditProfile): JSX.Element {
 
             <Input
               rows={5}
-              name="bio"
+              {...register("bio")}
               className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
               placeholder="Describe Yourself"
             />
@@ -155,4 +223,4 @@ function EditProfile(props: IEditProfile): JSX.Element {
   );
 }
 
-export default EditProfile;
+export default withAuth(EditProfile);
