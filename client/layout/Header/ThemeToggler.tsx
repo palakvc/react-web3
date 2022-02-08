@@ -10,10 +10,12 @@ function ThemeToggler() {
     document.body.classList.add("dark");
     setDarkMode(true);
     document.documentElement.setAttribute("data-theme", "dark");
+    document.documentElement.style.colorScheme = "dark";
   };
 
   const setLight = () => {
     document.documentElement.setAttribute("data-theme", "light");
+    document.documentElement.style.colorScheme = "light";
     document.documentElement.classList.remove("dark");
     document.body.classList.remove("dark");
     setDarkMode(false);

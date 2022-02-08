@@ -226,10 +226,10 @@ function Header() {
           ) : (
             <div className="py-2">
               <Button variant="outlined" onClick={onConnectToMetamask}>
-                <div className="flex items-center">
+                <div className="px-1 flex items-center justify-between">
                   <img
                     src="/images/MetamaskLogo.svg"
-                    className="mx-1 w-auto h-[26px]"
+                    className="mr-1 w-auto h-[26px]"
                   />
                   <div className="hidden md:flex">Connect Wallet</div>
                 </div>
@@ -238,7 +238,7 @@ function Header() {
           )}
         </div>
       </div>
-      <div className="w-full sublime-gd h-[2px]" />
+      {/* <div className="w-full sublime-gd h-[2px]" /> */}
     </header>
   );
 }
