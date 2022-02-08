@@ -1,8 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 
-const styles = `inline-block p-2 rounded-lg sublime-gd hover:text-white active:text-opacity-75 focus:outline-none`;
-
 function IconButton(
   props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
     variant?: "outlined" | "filled";
@@ -12,7 +10,10 @@ function IconButton(
   return (
     <button
       {...props}
-      className={clsx(styles, props.className && props.className)}
+      className={clsx(
+        "inline-block p-2 rounded-lg sublime-gd hover:text-white active:text-opacity-75 focus:outline-none",
+        props.className && props.className
+      )}
     >
       <span
         className={clsx(

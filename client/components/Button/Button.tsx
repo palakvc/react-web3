@@ -1,8 +1,6 @@
 import React from "react";
 import clsx from "clsx";
 
-const styles: string = `p-[1px] sublime-gd rounded-32 active:text-opacity-75 focus:outline-none`;
-
 function Button(
   props: React.ButtonHTMLAttributes<HTMLButtonElement> & {
     variant?: "outlined" | "filled";
@@ -12,7 +10,10 @@ function Button(
   return (
     <button
       {...props}
-      className={clsx(styles, props.className && props.className)}
+      className={clsx(
+        "p-[1px] sublime-gd rounded-32 active:text-opacity-75 focus:outline-none",
+        props.className && props.className
+      )}
     >
       <span
         className={clsx(

@@ -1,6 +1,7 @@
 import Avatar from "components/Avatar/Avatar";
 import LikeIcon from "icons/LikeIcon";
 import React from "react";
+import Image from "next/image";
 
 interface IPost {}
 
@@ -8,7 +9,7 @@ function Post(props: IPost): JSX.Element {
   return (
     <div className="sm:block sm:px-6 lg:px-8">
       <div className="border-t border-b sm:border border-white dark:border-black relative bg-white dark:bg-black sm:rounded-xl shadow-md overflow-hidden mx-auto sm:max-w-xl">
-        <div className="flex py-1 justify-between items-center inline-flex w-full text-secondary dark:text-darkTextPrimary my-1">
+        <div className="flex py-1 justify-between items-center w-full text-secondary dark:text-darkTextPrimary my-1">
           <div className="flex items-center">
             <Avatar /> John Doe
           </div>
@@ -16,10 +17,11 @@ function Post(props: IPost): JSX.Element {
         </div>
         <div className="block w-full aspect-h-10 aspect-w-10 bg-white dark:bg-darkBg2 focus:outline-none overflow-hidden">
           <span className="border-0 m-0 p-0 absolute">
-            <img
+            <Image
               src="https://pentas-bucket.s3.ap-southeast-1.amazonaws.com/next-s3-uploads/a6818252-5342-40a5-aae1-108694f4fcd5/Picsart_22-01-20_18-00-51-510.jpg"
               className="object-cover absolute min-w-100 min-h-100"
               alt="art"
+              layout="fill"
             />
           </span>
         </div>
@@ -34,9 +36,9 @@ function Post(props: IPost): JSX.Element {
             that people want... All this while I have been entertaining my own
             satisfaction in creation of works. There are mainly self
             satisfactory escapism medium for me to runaway from stress and
-            problem... The transition,The Change...it doesn't come easy... Now I
-            know how hard it is to produce "aesthetically pleasing" works.This
-            is my efforts to keep on going...Thanks for funding my artventures.
+            problem... The transition,The Change...it doesnt come easy... Now I
+            know how hard it is to produce aesthetically pleasing works.This is
+            my efforts to keep on going...Thanks for funding my artventures.
             Thanks for investing in Me Your new found friend
           </p>
         </div>
