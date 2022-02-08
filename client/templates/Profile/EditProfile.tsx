@@ -3,10 +3,11 @@ import AtEmailIcon from "icons/AtEmailIcon";
 import PencilIcon from "icons/PencilIcon";
 import withAuth from "layout/AuthRoute";
 import React from "react";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "store";
 import { IUserDetails, setUserDetails } from "store/authSlice";
-import { toBlob } from "utils/commonUtils";
+import { toBlob } from "lib/commonUtils";
 
 interface IEditProfile extends IUserDetails {}
 
@@ -67,7 +68,6 @@ function EditProfile(
         typeof coverImage === "string" ? coverImage : toBlob(coverImage),
     };
     dispatch(setUserDetails(payload));
-    console.log(data);
   };
 
   return (
@@ -116,7 +116,7 @@ function EditProfile(
                 ref={profilePicRef}
               />
             </label>
-            <img
+            <Image
               src={
                 profileImage
                   ? typeof profileImage === "string"
@@ -124,8 +124,10 @@ function EditProfile(
                     : toBlob(profileImage)
                   : defaultProfile
               }
-              alt=""
+              alt="profile image"
               className=" object-cover w-96 h-96 mx-auto rounded-full shadow-xl"
+              height={150}
+              width={150}
             />
             <button
               className="p-4 rounded-full bg-white absolute right-12 bottom-0 dark:bg-gray-700"

@@ -15,8 +15,7 @@ function Button(
       className={clsx(
         `text-gray-900 dark:text-gray-200 border border-gray-300 dark:border-gray-700 p-2 text-sm lg:text-base font-medium rounded-32`,
         {
-          "dark:bg-darkPrimary dark:text-white":
-            variant === "outlined",
+          "dark:bg-darkPrimary dark:text-white": variant === "outlined",
         },
         props.className && props.className
       )}

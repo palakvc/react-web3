@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import User from "icons/User";
+import Image from "next/image";
 import React from "react";
 
 interface IAvatarProps {
@@ -20,9 +21,11 @@ function Avatar(props: IAvatarProps) {
       {children ? (
         children
       ) : src ? (
-        <img
+        <Image
           src={src}
           alt="user"
+          height={100}
+          width={100}
           className="w-full rounded-full object-cover h-10"
         />
       ) : (

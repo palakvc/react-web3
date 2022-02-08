@@ -11,6 +11,7 @@ function ThemeToggler() {
     setDarkMode(true);
     document.documentElement.setAttribute("data-theme", "dark");
     document.documentElement.style.colorScheme = "dark";
+    localStorage.setItem("theme", "dark");
   };
 
   const setLight = () => {
@@ -19,6 +20,7 @@ function ThemeToggler() {
     document.documentElement.classList.remove("dark");
     document.body.classList.remove("dark");
     setDarkMode(false);
+    localStorage.setItem("theme", "light");
   };
 
   useEffect(() => {
@@ -26,12 +28,12 @@ function ThemeToggler() {
       (window.matchMedia &&
         window.matchMedia("(prefers-color-scheme: dark)").matches) ||
       localStorage.getItem("theme") === "dark";
-
     if (prefersDark && !isDarkMode) {
       setDark();
     } else {
       setLight();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleTheme: React.MouseEventHandler<HTMLButtonElement> = (e) => {

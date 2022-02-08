@@ -1,6 +1,7 @@
 import Avatar from "components/Avatar/Avatar";
 import LikeIcon from "icons/LikeIcon";
 import React from "react";
+import Image from "next/image";
 
 type FeaturePost =
   | { isFeature: true; description: string }
@@ -36,7 +37,7 @@ function Post(props: IPost): JSX.Element {
   return (
     <div className="sm:block sm:px-6 lg:px-8" key={id}>
       <div className="border-t border-b sm:border border-white dark:border-black relative bg-white dark:bg-black sm:rounded-xl shadow-md overflow-hidden mx-auto sm:max-w-xl">
-        <div className="flex py-1 justify-between items-center inline-flex w-full text-secondary dark:text-darkTextPrimary my-1">
+        <div className="flex py-1 justify-between items-center w-full text-secondary dark:text-darkTextPrimary my-1">
           <div className="flex items-center">
             <Avatar src={artistProfileImage} /> {artistName}
           </div>
@@ -47,10 +48,11 @@ function Post(props: IPost): JSX.Element {
         </div>
         <div className="block w-full aspect-h-10 aspect-w-10 bg-white dark:bg-darkBg2 focus:outline-none overflow-hidden">
           <span className="border-0 m-0 p-0 absolute">
-            <img
+            <Image
               src={artSrc || defaultArt}
               className="object-cover absolute min-w-100 min-h-100"
               alt="art"
+              layout="fill"
             />
           </span>
         </div>

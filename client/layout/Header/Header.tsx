@@ -3,7 +3,8 @@ import IconButton from "components/IconButton/IconButton";
 import Input from "components/Input/Input";
 import Search from "icons/SearchIcon";
 import Link from "next/link";
-import ThemeToggler from "./ThemeToggler";
+import Image from "next/image";
+import ThemeToggler from "./components/ThemeToggler";
 import React, { useEffect, useState } from "react";
 import { RootState, useAppDispatch, useAppSelector } from "store";
 import {
@@ -14,7 +15,7 @@ import {
 import { useRouter } from "next/router";
 import clsx from "clsx";
 import useClickOutside from "hooks/useClickOutside";
-import { formatAddress, shortenAddress } from "utils/commonUtils";
+import { formatAddress, shortenAddress } from "lib/commonUtils";
 import User from "icons/User";
 import Avatar from "components/Avatar/Avatar";
 
@@ -86,7 +87,7 @@ function Header() {
       .then((address: String[]) => {
         console.log("on load get account", address);
         if (address.length > 0) {
-          // dispatch(setUserDetails({ accountId: address[0] }));
+          dispatch(setUserDetails({ accountId: address[0] }));
         }
       });
 
@@ -97,7 +98,7 @@ function Header() {
       // ethereum.removeListener("accountsChanged", onAccountChange);
       ethereum.removeListener("chainChanged", onChainIdChange);
     };
-  }, [ethereum]);
+  }, [ethereum, dispatch]);
 
   const onConnectToMetamask = async () => {
     const accounts = await ethereum.request({
@@ -145,10 +146,15 @@ function Header() {
     <header className="w-full bg-white dark:bg-black shadow-md z-[100] fixed top-0">
       <div className="flex items-center justify-between h-36 max-w-screen-xl px-4 mx-auto">
         <div className="flex flex-1 max-w-320 items-center space-x-4 w-1/3">
-          <div className="mx-4 min-w-64 w-64">
-            <a href="/">
-              <img src="/images/logo.svg" />
-            </a>
+          <div className="mx-4 min-w-64 w-64 cursor-pointer">
+            <Link href="/" passHref>
+              <Image
+                src="/images/logo.svg"
+                alt="artistic log"
+                height={100}
+                width={100}
+              />
+            </Link>
           </div>
 
           <div className="ml-12 relative flex w-full">
@@ -165,7 +171,7 @@ function Header() {
 
         <nav className="flex items-center justify-center space-x-8 font-medium w-1/3">
           {navItems.map(({ href, title }) => (
-            <Link href={href} key={title}>
+            <Link href={href} key={title} passHref>
               <span className="cursor-pointer text-gray-800 dark:text-gray-500 dark:hover:text-white hover:border-sublime hover:border-b-2">
                 {title}
               </span>
@@ -227,9 +233,12 @@ function Header() {
             <div className="py-2">
               <Button variant="outlined" onClick={onConnectToMetamask}>
                 <div className="px-1 flex items-center justify-between">
-                  <img
+                  <Image
                     src="/images/MetamaskLogo.svg"
                     className="mr-1 w-auto h-[26px]"
+                    alt="metamask logo"
+                    height={26}
+                    width={40}
                   />
                   <div className="hidden md:flex">Connect Wallet</div>
                 </div>

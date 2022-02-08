@@ -12,7 +12,7 @@ function withAuth<T>(Component: NextComponentType<T>) {
       if (!isLoggedIn) {
         router.push("/");
       }
-    }, [isLoggedIn]);
+    }, [isLoggedIn, router]);
 
     return <Component {...props} />;
   };
