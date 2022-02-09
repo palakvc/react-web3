@@ -2,6 +2,7 @@ import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
 import snackbarReducer from "./snackbarSlice";
 import authSliceReducer from "./authSlice";
 import commonReducer from "./commonSlice";
+import profileReducer from "./profileSlice"
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 export const store = configureStore({
@@ -9,6 +10,7 @@ export const store = configureStore({
     snackbarReducer,
     auth: authSliceReducer,
     commonReducer,
+    profileReducer
   },
 });
 

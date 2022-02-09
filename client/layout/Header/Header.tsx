@@ -132,10 +132,15 @@ function Header() {
   };
 
   const dropdownItems: dropdownItems[] = [
+    // {
+    //   title: "My Profile",
+    //   href: "/user",
+    // },
     {
-      title: "My Profile",
-      href: "/profile",
+      title: "Edit Profile",
+      href: "/user/edit",
     },
+
     {
       title: "Logout",
       fx: handleLogout,

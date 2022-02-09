@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "store";
 import { IUserDetails, setUserDetails } from "store/authSlice";
 import { toBlob } from "lib/commonUtils";
+import { updateProfile } from "store/profileSlice";
 
 interface IEditProfile extends IUserDetails {}
 
@@ -51,23 +52,25 @@ function EditProfile(
     const target = ev.target;
     const { name, files } = target;
     const file = files?.[0];
-
+    const formData = new FormData();
     if (file && name === "cover") {
-      setCoverImage(file);
+      formData.append("coverImage", file);
+      dispatch(updateProfile({ userId: 9, formData }));
     } else if (file && name === "profile") {
-      setProfileImage(file);
+      formData.append("profileImage", file);
+      dispatch(updateProfile({ userId: 9, formData }));
     }
   };
 
   const onSubmit = (data: IEditProfile) => {
-    const payload: IEditProfile = {
-      ...data,
-      profileImage:
-        typeof profileImage === "string" ? profileImage : toBlob(profileImage),
-      coverImage:
-        typeof coverImage === "string" ? coverImage : toBlob(coverImage),
-    };
-    dispatch(setUserDetails(payload));
+    const formData = new FormData();
+    const userDetails = { ...data };
+    delete userDetails.profileImage;
+    delete userDetails.coverImage;
+    for (const [key, value] of Object.entries(userDetails)) {
+      formData.append(key, value);
+    }
+    dispatch(updateProfile({ userId: 9, formData }));
   };
 
   return (

@@ -48,4 +48,31 @@ export const authSlice = createSlice({
 
 export const { setUserDetails, setUserAuthentication, logoutUser } =
   authSlice.actions;
+
+
+// export const deleteVideo = createAsyncThunk(
+//   "how-to-videos/deleteVideo",
+//   async (id, { dispatch, getState }) => {
+//     const { videos: prev } = getState().howToVideos;
+//     const videos = [...prev];
+//     return http("GET", `admin/video/delete/${id}`)
+//       .then((res) => {
+//         const index = videos.findIndex((i) => i._id === id);
+//         if (index !== -1) {
+//           videos.splice(index, 1);
+//           dispatch(removeVideo([...videos]));
+//         }
+//       })
+//       .catch((err) => {
+//         dispatch(
+//           showMessage({
+//             message: err.message || "Something went wrong",
+//             type: "error",
+//           })
+//         );
+//       });
+//   }
+// );
+
+
 export default authSlice.reducer;
