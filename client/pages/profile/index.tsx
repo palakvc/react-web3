@@ -1,4 +1,5 @@
 import PageHead from "layout/PageHead";
+import useUser from "lib/useUser";
 import React from "react";
 import EditProfile from "templates/Profile";
 

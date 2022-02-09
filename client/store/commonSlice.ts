@@ -11,7 +11,7 @@ export type commonState = {
 
 let initialState: commonState = {}
 
-if (typeof window !== "undefined") {
+if (typeof window !== "undefined" && (window as any)?.ethereum) {
     initialState = {
         ...initialState,
         globalObjects: {
