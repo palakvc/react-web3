@@ -6,8 +6,8 @@ export interface IUserDetails {
   username: string;
   bio: string;
   accountId?: string;
-  profileImage?: string;
-  coverImage?: string;
+  profileImage?: string | File | null;
+  coverImage?: string | File | null;
 }
 
 export interface IAuthState {
@@ -49,7 +49,6 @@ export const authSlice = createSlice({
 export const { setUserDetails, setUserAuthentication, logoutUser } =
   authSlice.actions;
 
-
 // export const deleteVideo = createAsyncThunk(
 //   "how-to-videos/deleteVideo",
 //   async (id, { dispatch, getState }) => {
@@ -73,6 +72,5 @@ export const { setUserDetails, setUserAuthentication, logoutUser } =
 //       });
 //   }
 // );
-
 
 export default authSlice.reducer;

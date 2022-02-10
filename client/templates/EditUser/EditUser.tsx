@@ -5,7 +5,7 @@ import withAuth from "layout/AuthRoute";
 import React from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
-import { useAppDispatch, useAppSelector } from "store";
+import { RootState, useAppDispatch, useAppSelector } from "store";
 import { IUserDetails, setUserDetails } from "store/authSlice";
 import { toBlob } from "lib/commonUtils";
 import { updateProfile } from "store/profileSlice";
@@ -31,6 +31,9 @@ function EditProfile(
 
   const profilePicRef = React.useRef<HTMLInputElement>(null);
   const coverRef = React.useRef<HTMLInputElement>(null);
+  const globalObjects = useAppSelector(
+    (state: RootState) => state.commonReducer.globalObjects
+  );
 
   const [profileImage, setProfileImage] = React.useState<File | string | null>(
     null
@@ -52,41 +55,62 @@ function EditProfile(
     const target = ev.target;
     const { name, files } = target;
     const file = files?.[0];
-    const formData = new FormData();
     if (file && name === "cover") {
-      formData.append("coverImage", file);
-      dispatch(updateProfile({ userId: 9, formData }));
+      setCoverImage(file);
     } else if (file && name === "profile") {
-      formData.append("profileImage", file);
-      dispatch(updateProfile({ userId: 9, formData }));
+      setProfileImage(file);
     }
   };
 
-  const onSubmit = (data: IEditProfile) => {
+  const onSubmit = async (data: IEditProfile) => {
     const formData = new FormData();
-    const userDetails = { ...data };
-    delete userDetails.profileImage;
-    delete userDetails.coverImage;
-    for (const [key, value] of Object.entries(userDetails)) {
+
+    const signer = globalObjects?.provider.getSigner();
+    const updateHash = await signer.signMessage(
+      "Message For updating user profile"
+    );
+
+    const payload: IEditProfile & { hash: string } = {
+      ...data,
+      profileImage: profileImage,
+      coverImage: coverImage,
+      hash: updateHash,
+    };
+
+    for (const [key, value] of Object.entries(payload)) {
       formData.append(key, value);
     }
+
     dispatch(updateProfile({ userId: 9, formData }));
   };
 
   return (
     <div className="w-full flex flex-wrap justify-center items-center">
       <div
-        className="sublime-gd rounded-lg p-16 w-full h-[298px] relative text-center bg-cover bg-no-repeat"
-        style={{
-          backgroundImage: `url(${
+        className="rounded-lg w-full h-[298px] relative text-center bg-cover bg-no-repeat"
+        // style={{
+        //   backgroundImage: `url(${
+        //     coverImage
+        //       ? typeof coverImage === "string"
+        //         ? coverImage
+        //         : toBlob(coverImage)
+        //       : defaultCover
+        //   })`,
+        // }}
+      >
+        <Image
+          src={
             coverImage
               ? typeof coverImage === "string"
                 ? coverImage
                 : toBlob(coverImage)
               : defaultCover
-          })`,
-        }}
-      >
+          }
+          alt="cover image"
+          unoptimized={typeof coverImage !== "string"}
+          className=" object-cover w-full h-full rounded-lg"
+          layout="fill"
+        />
         <label htmlFor="cover-picture">
           <input
             accept="image/*"
@@ -100,12 +124,12 @@ function EditProfile(
           />
         </label>
         <button
-          className="p-4 rounded-full bg-white absolute right-12 bottom-12 dark:bg-gray-700 "
+          className="p-4 rounded-full bg-gray-200 absolute right-12 bottom-12 dark:bg-gray-700 "
           onClick={() => coverRef!.current!.click()}
         >
           <PencilIcon className="text-gray-600 dark:text-white" />
         </button>
-        <div className="absolute left-32 -bottom-16 ring-2 ring-white bg-white dark:ring-black dark:bg-black rounded-full p-1">
+        <div className="absolute left-32 -bottom-16 w-96 h-96 bg-white dark:bg-black rounded-full p-1">
           <div className="relative">
             <label htmlFor="profile-picture">
               <input
@@ -128,12 +152,13 @@ function EditProfile(
                   : defaultProfile
               }
               alt="profile image"
-              className=" object-cover w-96 h-96 mx-auto rounded-full shadow-xl"
+              unoptimized={typeof profileImage !== "string"}
+              className=" object-cover w-96 h-96 mx-auto rounded-full"
               height={150}
               width={150}
             />
             <button
-              className="p-4 rounded-full bg-white absolute right-12 bottom-0 dark:bg-gray-700"
+              className="p-4 rounded-full bg-gray-200 absolute right-12 bottom-0 dark:bg-gray-700"
               onClick={() => profilePicRef!.current!.click()}
             >
               <PencilIcon className="text-gray-600 dark:text-white" />
@@ -158,7 +183,7 @@ function EditProfile(
               type="text"
               className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
               placeholder="Enter Username"
-              {...register("username")}
+              {...register("username", { required: true, maxLength: 20 })}
             />
           </div>
           <div>
@@ -171,7 +196,7 @@ function EditProfile(
 
             <Input
               type="text"
-              {...register("fullname")}
+              {...register("fullname", { required: true })}
               className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
               placeholder="Enter Name"
             />
@@ -189,7 +214,10 @@ function EditProfile(
                 type="email"
                 className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
                 placeholder="Enter email"
-                {...register("email")}
+                {...register("email", {
+                  required: true,
+                  pattern: /^[a-z0-9]+@[a-z0-9]+.[a-z0-9]+$/i,
+                })}
               />
 
               <span className="absolute inset-y-0 inline-flex items-center right-4">
