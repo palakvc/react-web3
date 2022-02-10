@@ -84,6 +84,8 @@ function EditProfile(
     dispatch(updateProfile({ userId: 9, formData }));
   };
 
+  console.log(errors);
+
   return (
     <div className="w-full flex flex-wrap justify-center items-center">
       <div
@@ -171,76 +173,50 @@ function EditProfile(
           onSubmit={handleSubmit(onSubmit)}
           className=" shadow-lg bg-white dark:bg-darkBg2 mx-auto p-16 rounded-lg mt-8 mb-0 space-y-4 "
         >
-          <div>
-            <label
-              htmlFor="username"
-              className="font-medium text-gray-600 inline-block mb-4"
-            >
-              Username
-            </label>
+          <Input
+            type="text"
+            label="Username"
+            className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
+            placeholder="Enter Username"
+            {...register("username", {
+              required: "* This field is required",
+              maxLength: 20,
+            })}
+            error={errors.username?.message}
+          />
 
-            <Input
-              type="text"
-              className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
-              placeholder="Enter Username"
-              {...register("username", { required: true, maxLength: 20 })}
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="fullname"
-              className="font-medium text-gray-600 inline-block mb-4"
-            >
-              Full Name
-            </label>
+          <Input
+            label="Full Name"
+            type="text"
+            {...register("fullname", {
+              required: "* This field is required",
+            })}
+            className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
+            placeholder="Enter Name"
+            error={errors.fullname?.message}
+          />
 
-            <Input
-              type="text"
-              {...register("fullname", { required: true })}
-              className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
-              placeholder="Enter Name"
-            />
-          </div>
-          <div>
-            <label
-              htmlFor="email"
-              className="font-medium text-gray-600 inline-block mb-4"
-            >
-              Email
-            </label>
+          <Input
+            label="Email"
+            className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
+            placeholder="Enter email"
+            {...register("email", {
+              required: "* This field is required",
+              pattern: {
+                value: /^[a-z0-9._]+@[a-z0-9]+.[a-z]+$/i,
+                message: "Please enter a valid email",
+              },
+            })}
+            error={errors.email?.message}
+          />
 
-            <div className="relative">
-              <Input
-                type="email"
-                className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
-                placeholder="Enter email"
-                {...register("email", {
-                  required: true,
-                  pattern: /^[a-z0-9]+@[a-z0-9]+.[a-z0-9]+$/i,
-                })}
-              />
-
-              <span className="absolute inset-y-0 inline-flex items-center right-4">
-                <AtEmailIcon className="text-gray-600" />
-              </span>
-            </div>
-          </div>
-
-          <div>
-            <label
-              htmlFor="bio"
-              className="font-medium text-gray-600 inline-block mb-4"
-            >
-              Bio
-            </label>
-
-            <Input
-              rows={5}
-              {...register("bio")}
-              className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
-              placeholder="Describe Yourself"
-            />
-          </div>
+          <Input
+            rows={5}
+            label="Bio"
+            {...register("bio")}
+            className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
+            placeholder="Describe Yourself"
+          />
 
           <div className="flex items-center justify-center">
             <button
