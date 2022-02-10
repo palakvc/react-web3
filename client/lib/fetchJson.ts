@@ -1,20 +1,17 @@
 import axios, { AxiosRequestConfig, AxiosRequestHeaders } from "axios";
-
+import { requestResponse } from "store/authSlice";
 interface IOptions extends AxiosRequestConfig {
     isToken?: string,
 }
-
-
 
 export default async function fetcher(
     request: string,
     method: "get" | "post" | "put" | "delete" | "patch" = "get",
     data: any,
-    isToken: string,
+    isToken?: string,
     headers?: AxiosRequestHeaders & { Authorization?: string }
 ) {
     const authorization = isToken ? { Authorization: `Bearer ${isToken}` } : {};
-
     const options: IOptions = {
         url:
             request.charAt(0) === "/"
@@ -27,7 +24,6 @@ export default async function fetcher(
             ...headers,
         },
     };
-
     return new Promise((resolve, reject) => {
         axios(options)
             .then((res) => {

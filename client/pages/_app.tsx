@@ -3,7 +3,6 @@ import React from "react";
 import { Provider } from "react-redux";
 import type { AppProps } from "next/app";
 import { store } from "store";
-import Layout from "layout/Layout";
 
 interface IComponent {
   Component: {
@@ -16,9 +15,7 @@ function MyApp({ Component, pageProps }: AppProps & IComponent) {
     Component.getLayout || (((page: JSX.Element) => page) as React.ReactNode);
 
   return (
-    <Provider store={store}>
-      <Layout>{getLayout(<Component {...pageProps} />)}</Layout>
-    </Provider>
+    <Provider store={store}>{getLayout(<Component {...pageProps} />)}</Provider>
   );
 }
 

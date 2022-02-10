@@ -1,10 +1,20 @@
-import type { NextPage } from "next";
-import Head from "next/head";
+import { Container } from "layout/Container";
+import { Header } from "layout/Header";
 import Homepage from "templates/Homepage";
-import styles from "../styles/Home.module.css";
 
-const Home: NextPage = () => {
-  return <Homepage />;
+export default function Home(): JSX.Element {
+  return (
+    <>
+      <Homepage />
+    </>
+  );
+}
+
+Home.getLayout = function getLayout(page: JSX.Element) {
+  return (
+    <>
+      <Header />
+      <Container>{page}</Container>
+    </>
+  );
 };
-
-export default Home;

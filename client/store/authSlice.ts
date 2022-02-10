@@ -1,28 +1,49 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
+export interface IOptions {
+  method: "post" | "get",
+  body?: {
+    account_id: string;
+    hash: string;
+  },
+  isToken?: string
+}
+
 export interface IUserDetails {
+  id?: number
+  accessToken: string
+  isLoggedIn: boolean
   fullname: string;
   email: string;
   username: string;
   bio: string;
-  accountId?: string;
+  account_id?: string;
   profileImage?: string | File | null;
   coverImage?: string | File | null;
 }
-
+export interface requestResponse {
+  data?: any
+  statusCode: number,
+  message: string
+}
 export interface IAuthState {
-  isLoggedIn: boolean;
+  loading: boolean;
+  error: string;
   userDetails: IUserDetails;
 }
 
-const initialState: IAuthState = {
-  isLoggedIn: false,
+export const initialState: IAuthState = {
+  loading: false,
+  error: "",
   userDetails: {
+    isLoggedIn: false,
+    accessToken: "",
     fullname: "",
     email: "",
     username: "",
     bio: "",
-    accountId: "",
+    account_id: "",
     profileImage: "",
     coverImage: "",
   },
@@ -32,45 +53,25 @@ export const authSlice = createSlice({
   name: "auth slice",
   initialState,
   reducers: {
-    setUserAuthentication: (state, { payload }) => {
-      state = { ...state, isLoggedIn: true };
-    },
     setUserDetails: (state, { payload }) => {
-      state.isLoggedIn = true;
-      state.userDetails = { ...state.userDetails, ...payload };
+      state.userDetails = { ...state.userDetails, ...payload, isLoggedIn: true };
     },
-    logoutUser: (state, action) => {
-      state.isLoggedIn = false;
-      state.userDetails = initialState.userDetails;
+    loginBegin: (state) => {
+      state.loading = true
     },
+    loginSuccess: (state, { payload }) => {
+      state.loading = false
+      state.userDetails = { ...payload, isLoggedIn: true }
+    },
+    loginFailure: (state, { payload }) => {
+      state.loading = false
+      state.error = payload
+    }
   },
 });
 
-export const { setUserDetails, setUserAuthentication, logoutUser } =
+export const { setUserDetails, loginBegin, loginSuccess, loginFailure } =
   authSlice.actions;
 
-// export const deleteVideo = createAsyncThunk(
-//   "how-to-videos/deleteVideo",
-//   async (id, { dispatch, getState }) => {
-//     const { videos: prev } = getState().howToVideos;
-//     const videos = [...prev];
-//     return http("GET", `admin/video/delete/${id}`)
-//       .then((res) => {
-//         const index = videos.findIndex((i) => i._id === id);
-//         if (index !== -1) {
-//           videos.splice(index, 1);
-//           dispatch(removeVideo([...videos]));
-//         }
-//       })
-//       .catch((err) => {
-//         dispatch(
-//           showMessage({
-//             message: err.message || "Something went wrong",
-//             type: "error",
-//           })
-//         );
-//       });
-//   }
-// );
 
 export default authSlice.reducer;

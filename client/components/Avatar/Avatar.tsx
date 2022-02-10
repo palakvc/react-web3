@@ -14,7 +14,7 @@ function Avatar(props: IAvatarProps) {
   return (
     <div
       className={clsx(
-        "mx-3 flex items-center justify-center h-10 w-10 rounded-full bg-white bg-gray-200 dark:bg-darkPrimary",
+        "mx-3 flex items-center justify-center h-10 w-10 rounded-full  bg-gray-200 dark:bg-darkPrimary",
         className
       )}
     >

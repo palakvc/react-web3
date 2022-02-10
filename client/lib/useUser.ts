@@ -1,14 +1,17 @@
 import { useEffect } from 'react'
 import Router from 'next/router'
 import useSWR from 'swr'
-import { User } from 'pages/api/user'
+import { IUserDetails, requestResponse } from 'store/authSlice'
+import axios from 'axios'
 
 
 export default function useUser({
     redirectTo = '',
     redirectIfFound = false,
 } = {}) {
-    const { data: user, mutate: mutateUser } = useSWR<User>('/api/user')
+
+    const fetcher = (url: string) => axios.get(url).then(res => res.data)
+    const { data: user, mutate: mutateUser } = useSWR<IUserDetails | void>('/api/user', fetcher)
 
     useEffect(() => {
         // if no redirect needed, just return (example: already on /dashboard)
