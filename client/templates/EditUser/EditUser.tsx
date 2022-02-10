@@ -1,7 +1,6 @@
 import Input from "components/Input/Input";
 import AtEmailIcon from "icons/AtEmailIcon";
 import PencilIcon from "icons/PencilIcon";
-import withAuth from "layout/AuthRoute";
 import React from "react";
 import Image from "next/image";
 import { useForm } from "react-hook-form";
@@ -9,6 +8,7 @@ import { RootState, useAppDispatch, useAppSelector } from "store";
 import { IUserDetails, setUserDetails } from "store/authSlice";
 import { toBlob } from "lib/commonUtils";
 import { updateProfile } from "store/profileSlice";
+import useUser from "lib/useUser";
 
 interface IEditProfile extends IUserDetails {}
 
@@ -19,6 +19,8 @@ const defaultProfile = "https://www.hyperui.dev/photos/man-4.jpeg";
 function EditProfile(
   props: IEditProfile & React.ComponentProps<any>
 ): JSX.Element {
+  const { user } = useUser({ redirectTo: "/" });
+
   const dispatch = useAppDispatch();
   const { userDetails } = useAppSelector(({ auth }) => auth);
 
@@ -256,4 +258,4 @@ function EditProfile(
   );
 }
 
-export default withAuth(EditProfile);
+export default EditProfile;

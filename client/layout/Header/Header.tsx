@@ -1,23 +1,25 @@
+import React, { useCallback, useEffect, useState } from "react";
 import Button from "components/Button/Button";
-import IconButton from "components/IconButton/IconButton";
 import Input from "components/Input/Input";
 import Search from "icons/SearchIcon";
 import Link from "next/link";
 import Image from "next/image";
 import ThemeToggler from "./components/ThemeToggler";
-import React, { useEffect, useState } from "react";
 import { RootState, useAppDispatch, useAppSelector } from "store";
 import {
-  logoutUser,
-  setUserAuthentication,
-  setUserDetails,
+  initialState,
+  IOptions,
+  loginBegin,
+  loginFailure,
+  loginSuccess,
 } from "store/authSlice";
 import { useRouter } from "next/router";
 import clsx from "clsx";
 import useClickOutside from "hooks/useClickOutside";
 import { formatAddress, shortenAddress } from "lib/commonUtils";
-import User from "icons/User";
 import Avatar from "components/Avatar/Avatar";
+import fetcher from "lib/fetchJson";
+import useUser from "lib/useUser";
 
 type navItems = {
   href: string;
@@ -50,6 +52,7 @@ const navItems: navItems[] = [
 ];
 
 function Header() {
+  const { user, mutateUser } = useUser();
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [openProfileMenu, setOpenProfileMenu] = React.useState(false);
@@ -64,10 +67,10 @@ function Header() {
   const globalObjects = useAppSelector(
     (state: RootState) => state.commonReducer.globalObjects
   );
-  const { isLoggedIn, userDetails } = useAppSelector(
-    ({ auth }: RootState) => auth
-  );
-  const { accountId, username, profileImage } = userDetails;
+
+  const { account_id, username, profileImage, isLoggedIn, accessToken } =
+    user || initialState.userDetails;
+
   const ethereum = globalObjects?.ethereumObject;
   const provider = globalObjects?.provider;
 
@@ -79,26 +82,49 @@ function Header() {
     console.log("on account Change", accounts);
   };
 
+  const loginUser = useCallback(
+    (requestOptions: IOptions) => {
+      dispatch(loginBegin());
+      mutateUser(
+        fetcher("/api/login", "post", requestOptions)
+          .then((response: any) => {
+            dispatch(loginSuccess(response.data));
+          })
+          .catch((error) => {
+            dispatch(loginFailure(error.response.message));
+          })
+      );
+    },
+    [dispatch, mutateUser]
+  );
+
   useEffect(() => {
-    ethereum
-      .request({
-        method: "eth_accounts",
-      })
-      .then((address: String[]) => {
-        console.log("on load get account", address);
-        if (address.length > 0) {
-          dispatch(setUserDetails({ accountId: address[0] }));
-        }
-      });
-
-    ethereum.on("accountsChanged", onAccountChange);
-
+    if (accessToken && !isLoggedIn) {
+      ethereum
+        .request({
+          method: "eth_requestAccounts",
+        })
+        .then((address: String[]) => {
+          console.log(account_id, address[0]);
+          if (address.length > 0 && account_id === address[0]) {
+            console.log("calling auto login");
+            const requestOptions: IOptions = {
+              method: "get",
+              isToken: accessToken,
+            };
+            loginUser(requestOptions);
+          }
+        });
+    }
+    // ethereum.on("accountsChanged", onAccountChange);
     ethereum.on("chainChanged", onChainIdChange);
     return () => {
       // ethereum.removeListener("accountsChanged", onAccountChange);
       ethereum.removeListener("chainChanged", onChainIdChange);
     };
-  }, [ethereum, dispatch]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ethereum, dispatch, loginUser, accessToken]);
 
   const onConnectToMetamask = async () => {
     const accounts = await ethereum.request({
@@ -113,8 +139,14 @@ function Header() {
     const signInHash = await signer.signMessage(
       "Message For Signning to Artistics"
     );
-    dispatch(setUserDetails({ accountId: accounts[0], hash: signInHash }));
-    console.log("accounts after clicking", accounts[0], signInHash);
+    const requestOptions: IOptions = {
+      method: "post",
+      body: {
+        account_id: accounts[0],
+        hash: signInHash,
+      },
+    };
+    loginUser(requestOptions);
   };
 
   const toggleMenu = (): void => {
@@ -126,9 +158,11 @@ function Header() {
   };
 
   const handleLogout = (): void => {
-    console.log("called");
-    dispatch(logoutUser({}));
-    setOpenProfileMenu(false);
+    mutateUser(fetcher("/api/logout", "post", null))
+      .then(() => {
+        setOpenProfileMenu(false);
+      })
+      .catch((error) => {});
   };
 
   const dropdownItems: dropdownItems[] = [
@@ -188,7 +222,7 @@ function Header() {
           <ThemeToggler />
           {isLoggedIn ? (
             <div className="relative flex items-center">
-              <Avatar src={profileImage} />
+              {/* <Avatar src={profileImage} /> */}
               <div className="" ref={dropdownRef}>
                 <div className="flex items-center">
                   <Button
@@ -198,7 +232,7 @@ function Header() {
                     variant="outlined"
                   >
                     <span className="mx-2 text-gray-700 dark:text-gray-200">
-                      {username ? username : shortenAddress(accountId)}
+                      {username ? username : shortenAddress(account_id)}
                     </span>
                   </Button>{" "}
                 </div>
@@ -208,13 +242,13 @@ function Header() {
                     { ["hidden"]: !openProfileMenu }
                   )}
                 >
-                  {accountId && (
+                  {account_id && (
                     <div
                       className={
                         "font-medium flex items-center px-4 py-3 border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-gray-100 select-none"
                       }
                     >
-                      {formatAddress(accountId)}
+                      {formatAddress(account_id)}
                     </div>
                   )}
                   {dropdownItems.map(({ href = "#", title, fx }, i) => (
