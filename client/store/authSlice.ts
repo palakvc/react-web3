@@ -1,19 +1,18 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
 export interface IOptions {
-  method: "post" | "get",
+  method?: "post" | "get";
   body?: {
     account_id: string;
     hash: string;
-  },
-  isToken?: string
+  };
+  isToken?: string;
 }
 
 export interface IUserDetails {
-  id?: number
-  accessToken?: string
-  isLoggedIn?: boolean
+  id?: number;
+  accessToken?: string;
+  isLoggedIn?: boolean;
   full_name: string;
   email: string;
   username: string;
@@ -23,9 +22,9 @@ export interface IUserDetails {
   coverImage?: string | File | null;
 }
 export interface requestResponse {
-  data?: any
-  statusCode: number,
-  message: string
+  data?: any;
+  statusCode: number;
+  message: string;
 }
 export interface IAuthState {
   loading: boolean;
@@ -54,24 +53,27 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     setUserDetails: (state, { payload }) => {
-      state.userDetails = { ...state.userDetails, ...payload, isLoggedIn: true };
+      state.userDetails = {
+        ...state.userDetails,
+        ...payload,
+        isLoggedIn: true,
+      };
     },
     loginBegin: (state) => {
-      state.loading = true
+      state.loading = true;
     },
     loginSuccess: (state, { payload }) => {
-      state.loading = false
-      state.userDetails = { ...payload, isLoggedIn: true }
+      state.loading = false;
+      state.userDetails = { ...payload, isLoggedIn: true };
     },
     loginFailure: (state, { payload }) => {
-      state.loading = false
-      state.error = payload
-    }
+      state.loading = false;
+      state.error = payload;
+    },
   },
 });
 
 export const { setUserDetails, loginBegin, loginSuccess, loginFailure } =
   authSlice.actions;
-
 
 export default authSlice.reducer;

@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import fetcher from "lib/fetchJson";
 import { AppDispatch, RootState } from "store";
 import { setUserDetails } from "./authSlice";
+import { showMessage } from "./notifySlice";
 
 interface IProfile {
   loading: boolean;
@@ -69,7 +70,12 @@ export const updateProfile = createAsyncThunk<
         cb(response?.data);
       })
       .catch((error) => {
-        dispatch(updateProfileFailure(error.response.message));
+        console.error(error);
+        const { statusCode, message } = error.response.data;
+        dispatch(updateProfileFailure(error.response.data));
+        dispatch(
+          showMessage({ message: `${statusCode} - ${message}`, type: "error" })
+        );
       });
   }
 );

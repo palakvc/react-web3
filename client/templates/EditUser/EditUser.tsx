@@ -29,6 +29,7 @@ function EditProfile(
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm<IEditProfile>({ defaultValues: user as IEditProfile });
 
@@ -44,6 +45,13 @@ function EditProfile(
   const [coverImage, setCoverImage] = React.useState<File | string | null>(
     null
   );
+
+  React.useEffect(() => {
+    const fields = ["username", "email", "bio", "full_name"];
+    fields.forEach((v) => {
+      setValue(v, user[v]);
+    });
+  }, [user, setValue]);
 
   React.useEffect(() => {
     if (userDetails.profileImage) {
@@ -73,10 +81,17 @@ function EditProfile(
       "Message For updating user profile"
     );
 
+    const pImg =
+      typeof profileImage === "string"
+        ? profileImage.split("/").pop()
+        : profileImage;
+    const cImg =
+      typeof coverImage === "string" ? coverImage.split("/").pop() : coverImage;
+
     let payload: IEditProfile & { hash: string } = {
       ...data,
-      profileImage: profileImage,
-      coverImage: coverImage,
+      profileImage: pImg,
+      coverImage: cImg,
       hash: updateHash,
     };
 
@@ -99,14 +114,18 @@ function EditProfile(
       );
     };
 
-    dispatch(
-      updateProfile({
-        userId: 9,
-        formData,
-        cb,
-      })
-    );
+    if (user?.id) {
+      dispatch(
+        updateProfile({
+          userId: user?.id,
+          formData,
+          cb,
+        })
+      );
+    }
   };
+
+  console.log("coverImage,profileImage", coverImage, profileImage);
 
   return (
     <div className="w-full flex flex-wrap justify-center items-center">

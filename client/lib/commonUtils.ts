@@ -6,15 +6,24 @@ export function formatAddress(address: string = ""): string {
   return address.slice(0, 8) + "........" + address.slice(address.length - 8);
 }
 
-export const toBlob = (file: File | null): string =>
+export const toBlob = (file: File | null | undefined): string =>
   file ? URL.createObjectURL(file) : "";
 
 export function removeEmptyKeys(obj: any) {
   let i;
   for (i in obj) {
-    if (obj[i] === null || obj[i] === undefined || obj[i] === "") {
+    if (
+      obj[i] === null ||
+      obj[i] === undefined ||
+      obj[i] === "" ||
+      obj[i] === "null"
+    ) {
       delete obj[i];
-    } else if (typeof obj[i] === "object" && !Array.isArray(obj[i])) {
+    } else if (
+      typeof obj[i] === "object" &&
+      !obj[i].name &&
+      !Array.isArray(obj[i])
+    ) {
       const objValues = Object.values(obj[i]);
       const hasTruthyValue = objValues.findIndex(
         (a) => a === false || Boolean(a)

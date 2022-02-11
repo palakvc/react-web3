@@ -17,7 +17,7 @@ import {
 import { useRouter } from "next/router";
 import clsx from "clsx";
 import useClickOutside from "hooks/useClickOutside";
-import { formatAddress, shortenAddress } from "lib/commonUtils";
+import { formatAddress, shortenAddress, toBlob } from "lib/commonUtils";
 import Avatar from "components/Avatar/Avatar";
 import fetcher from "lib/fetchJson";
 import useUser from "lib/useUser";
@@ -98,6 +98,29 @@ function Header() {
     },
     [dispatch, mutateUser]
   );
+
+  // useEffect(() => {
+  //   if (account_id) {
+  //     const requestOptions: IOptions = {
+  //       isToken: user?.accessToken,
+  //     };
+  //     mutateUser(
+  //       fetcher(`users/${user?.account_id}`, "get", requestOptions)
+  //         .then((response: any) => {
+  //           dispatch(setUserDetails(response.data));
+  //         })
+  //         .catch((error) => {
+  //           dispatch(
+  //             showMessage({
+  //               message: error.response.data.message,
+  //               type: "error",
+  //             })
+  //           );
+  //         })
+  //     );
+  //   }
+  //   //eslint-disable-next-line
+  // }, [dispatch]);
 
   useEffect(() => {
     if (accessToken) {
@@ -227,7 +250,13 @@ function Header() {
           <ThemeToggler />
           {isLoggedIn ? (
             <div className="relative flex items-center">
-              {/* <Avatar src={profileImage} /> */}
+              <Avatar
+                src={
+                  typeof profileImage === "string"
+                    ? profileImage
+                    : toBlob(profileImage)
+                }
+              />
               <div className="" ref={dropdownRef}>
                 <div className="flex items-center">
                   <Button

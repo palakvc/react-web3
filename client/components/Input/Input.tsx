@@ -15,7 +15,7 @@ function Input(
   const { error, type, rows, label, className, id = "", name = "" } = props;
 
   return (
-    <div>
+    <div className="w-full">
       {label && (
         <label
           htmlFor={id ? id : name}
