@@ -6,6 +6,7 @@ const nextConfig = {
       "pentas-bucket.s3.ap-southeast-1.amazonaws.com",
       "www.hyperui.dev",
       "i.pravatar.cc",
+      "cdn.pentas.io"
     ],
   },
 };
