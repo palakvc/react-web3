@@ -3,6 +3,7 @@ import React from "react";
 import { Provider } from "react-redux";
 import type { AppProps } from "next/app";
 import { store } from "store";
+import Toast from "components/Toast";
 
 interface IComponent {
   Component: {
@@ -15,7 +16,10 @@ function MyApp({ Component, pageProps }: AppProps & IComponent) {
     Component.getLayout || (((page: JSX.Element) => page) as React.ReactNode);
 
   return (
-    <Provider store={store}>{getLayout(<Component {...pageProps} />)}</Provider>
+    <Provider store={store}>
+      <Toast />
+      {getLayout(<Component {...pageProps} />)}
+    </Provider>
   );
 }
 

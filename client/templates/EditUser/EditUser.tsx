@@ -10,6 +10,7 @@ import { removeEmptyKeys, toBlob } from "lib/commonUtils";
 import { updateProfile } from "store/profileSlice";
 import useUser from "lib/useUser";
 import fetcher from "lib/fetchJson";
+import { showMessage } from "store/notifySlice";
 
 interface IEditProfile extends IUserDetails {}
 
@@ -90,6 +91,12 @@ function EditProfile(
 
     const cb = (res: IUserDetails) => {
       mutateUser(fetcher("/api/userDetail", "post", { ...user, ...res }));
+      dispatch(
+        showMessage({
+          message: "Profile updated successfully",
+          type: "success",
+        })
+      );
     };
 
     dispatch(

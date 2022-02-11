@@ -1,16 +1,16 @@
 import { Action, configureStore, ThunkAction } from "@reduxjs/toolkit";
-import snackbarReducer from "./snackbarSlice";
+import notifyReducer from "./notifySlice";
 import authSliceReducer from "./authSlice";
 import commonReducer from "./commonSlice";
-import profileReducer from "./profileSlice"
+import profileReducer from "./profileSlice";
 import { useDispatch, useSelector, TypedUseSelectorHook } from "react-redux";
 
 export const store = configureStore({
   reducer: {
-    snackbarReducer,
+    notify: notifyReducer,
     auth: authSliceReducer,
     commonReducer,
-    profileReducer
+    profileReducer,
   },
 });
 

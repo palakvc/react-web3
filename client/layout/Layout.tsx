@@ -6,6 +6,7 @@ import Head from "next/head";
 // import { showMessage } from "store/snackbarSlice";
 import { Container } from "./Container";
 import { Header } from "./Header";
+import Toast from "components/Toast";
 
 interface ILayoutProps {
   children: React.ReactNode;
@@ -51,6 +52,7 @@ export default function Layout({ children }: ILayoutProps) {
         />
       )} */}
       <Header />
+      <Toast />
       <main>
         <Container>{children}</Container>
       </main>
