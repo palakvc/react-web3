@@ -12,6 +12,7 @@ import {
   loginBegin,
   loginFailure,
   loginSuccess,
+  setUserDetails,
 } from "store/authSlice";
 import { useRouter } from "next/router";
 import clsx from "clsx";
@@ -99,30 +100,34 @@ function Header() {
   );
 
   useEffect(() => {
-    if (accessToken && !isLoggedIn) {
-      ethereum
-        .request({
-          method: "eth_requestAccounts",
-        })
-        .then((address: String[]) => {
-          console.log(account_id, address[0]);
-          if (address.length > 0 && account_id === address[0]) {
-            console.log("calling auto login");
-            const requestOptions: IOptions = {
-              method: "get",
-              isToken: accessToken,
-            };
-            loginUser(requestOptions);
-          }
-        });
+    if (accessToken) {
+      dispatch(setUserDetails(user));
     }
-    // ethereum.on("accountsChanged", onAccountChange);
-    ethereum.on("chainChanged", onChainIdChange);
-    return () => {
-      // ethereum.removeListener("accountsChanged", onAccountChange);
-      ethereum.removeListener("chainChanged", onChainIdChange);
-    };
 
+    /* Auto-Login Using Metamask  */
+    // if (accessToken && !isLoggedIn) {
+    //   ethereum
+    //     .request({
+    //       method: "eth_requestAccounts",
+    //     })
+    //     .then((address: String[]) => {
+    //       console.log(account_id, address[0]);
+    //       if (address.length > 0 && account_id === address[0]) {
+    //         console.log("calling auto login");
+    //         const requestOptions: IOptions = {
+    //           method: "get",
+    //           isToken: accessToken,
+    //         };
+    //         loginUser(requestOptions);
+    //       }
+    //     });
+    // }
+    // // ethereum.on("accountsChanged", onAccountChange);
+    // ethereum.on("chainChanged", onChainIdChange);
+    // return () => {
+    //   // ethereum.removeListener("accountsChanged", onAccountChange);
+    //   ethereum.removeListener("chainChanged", onChainIdChange);
+    // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ethereum, dispatch, loginUser, accessToken]);
 

@@ -48,6 +48,7 @@ export const {
 interface IOptions {
   userId: number;
   formData: FormData;
+  cb?: (response?: any) => void;
 }
 
 export const updateProfile = createAsyncThunk<
@@ -57,16 +58,20 @@ export const updateProfile = createAsyncThunk<
     dispatch?: AppDispatch;
     state?: RootState;
   }
->("update-profile", async ({ userId, formData }, { dispatch }) => {
-  dispatch(updateProfileBegin());
-  return fetcher(`users/${userId}`, "put", formData, "")
-    .then((response: any) => {
-      dispatch(setUserDetails(response));
-      dispatch(updateProfileSuccess(response.data.message));
-    })
-    .catch((error) => {
-      dispatch(updateProfileFailure(error.response.message));
-    });
-});
+>(
+  "update-profile",
+  async ({ userId, formData, cb = () => {} }, { dispatch }) => {
+    dispatch(updateProfileBegin());
+    return fetcher(`users/${userId}`, "put", formData, "")
+      .then((response: any) => {
+        dispatch(setUserDetails(response?.data));
+        dispatch(updateProfileSuccess(response.data.message));
+        cb(response?.data);
+      })
+      .catch((error) => {
+        dispatch(updateProfileFailure(error.response.message));
+      });
+  }
+);
 
 export default profileSlice.reducer;

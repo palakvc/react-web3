@@ -12,9 +12,9 @@ export interface IOptions {
 
 export interface IUserDetails {
   id?: number
-  accessToken: string
-  isLoggedIn: boolean
-  fullname: string;
+  accessToken?: string
+  isLoggedIn?: boolean
+  full_name: string;
   email: string;
   username: string;
   bio: string;
@@ -39,7 +39,7 @@ export const initialState: IAuthState = {
   userDetails: {
     isLoggedIn: false,
     accessToken: "",
-    fullname: "",
+    full_name: "",
     email: "",
     username: "",
     bio: "",

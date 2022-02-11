@@ -6,9 +6,10 @@ import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { RootState, useAppDispatch, useAppSelector } from "store";
 import { IUserDetails, setUserDetails } from "store/authSlice";
-import { toBlob } from "lib/commonUtils";
+import { removeEmptyKeys, toBlob } from "lib/commonUtils";
 import { updateProfile } from "store/profileSlice";
 import useUser from "lib/useUser";
+import fetcher from "lib/fetchJson";
 
 interface IEditProfile extends IUserDetails {}
 
@@ -19,8 +20,7 @@ const defaultProfile = "https://www.hyperui.dev/photos/man-4.jpeg";
 function EditProfile(
   props: IEditProfile & React.ComponentProps<any>
 ): JSX.Element {
-  const { user } = useUser({ redirectTo: "/" });
-
+  const { user, mutateUser } = useUser({ redirectTo: "/" });
   const dispatch = useAppDispatch();
   const { userDetails } = useAppSelector(({ auth }) => auth);
 
@@ -29,7 +29,7 @@ function EditProfile(
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm<IEditProfile>({ defaultValues: userDetails });
+  } = useForm<IEditProfile>({ defaultValues: user as IEditProfile });
 
   const profilePicRef = React.useRef<HTMLInputElement>(null);
   const coverRef = React.useRef<HTMLInputElement>(null);
@@ -72,21 +72,34 @@ function EditProfile(
       "Message For updating user profile"
     );
 
-    const payload: IEditProfile & { hash: string } = {
+    let payload: IEditProfile & { hash: string } = {
       ...data,
       profileImage: profileImage,
       coverImage: coverImage,
       hash: updateHash,
     };
 
+    delete payload.accessToken;
+    delete payload.isLoggedIn;
+    delete payload.id;
+    removeEmptyKeys(payload);
+
     for (const [key, value] of Object.entries(payload)) {
       formData.append(key, value);
     }
 
-    dispatch(updateProfile({ userId: 9, formData }));
-  };
+    const cb = (res: IUserDetails) => {
+      mutateUser(fetcher("/api/userDetail", "post", { ...user, ...res }));
+    };
 
-  console.log(errors);
+    dispatch(
+      updateProfile({
+        userId: 9,
+        formData,
+        cb,
+      })
+    );
+  };
 
   return (
     <div className="w-full flex flex-wrap justify-center items-center">
@@ -190,12 +203,12 @@ function EditProfile(
           <Input
             label="Full Name"
             type="text"
-            {...register("fullname", {
+            {...register("full_name", {
               required: "* This field is required",
             })}
             className="w-full pr-12 border-gray-200 rounded-lg shadow-sm dark:bg-darkBg2"
             placeholder="Enter Name"
-            error={errors.fullname?.message}
+            error={errors.full_name?.message}
           />
 
           <Input
