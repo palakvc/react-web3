@@ -21,6 +21,7 @@ import { formatAddress, shortenAddress, toBlob } from "lib/commonUtils";
 import Avatar from "components/Avatar/Avatar";
 import fetcher from "lib/fetchJson";
 import useUser from "lib/useUser";
+import { showMessage } from "store/notifySlice";
 
 type navItems = {
   href: string;
@@ -81,6 +82,10 @@ function Header() {
 
   const onAccountChange = (accounts: String[]) => {
     console.log("on account Change", accounts);
+  };
+
+  const isMetamaskInstalled = () => {
+    return !!ethereum;
   };
 
   const loginUser = useCallback(
@@ -155,6 +160,15 @@ function Header() {
   }, [ethereum, dispatch, loginUser, accessToken]);
 
   const onConnectToMetamask = async () => {
+    if (!isMetamaskInstalled()) {
+      dispatch(
+        showMessage({
+          message: "Metamask not detected. Please install Metamask.",
+          type: "error",
+        })
+      );
+      return;
+    }
     const accounts = await ethereum.request({
       method: "eth_requestAccounts",
       params: [

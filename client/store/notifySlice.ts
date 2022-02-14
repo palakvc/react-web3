@@ -10,7 +10,7 @@ export interface IToastSlice {
 const initialState: IToastSlice = {
   open: false,
   message: "",
-  duration: 6000,
+  duration: 5000,
   type: "",
 };
 
@@ -21,9 +21,9 @@ export const notifySlice = createSlice({
     showMessage: (state, { payload }) => {
       console.log(payload);
       state.open = true;
-      state.duration = payload.duration;
+      state.duration = payload.duration || initialState.duration;
       state.message = payload.message;
-      state.type = payload.type;
+      state.type = payload.type || initialState.type;
     },
     hideMessage: (state) => {
       state.open = false;

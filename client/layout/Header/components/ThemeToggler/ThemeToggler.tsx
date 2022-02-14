@@ -49,14 +49,14 @@ function ThemeToggler() {
     <div className="mx-4">
       {isDarkMode ? (
         <button
-          className="rounded-full bg-transparent p-1"
+          className="transition rotate-180 rounded-full bg-transparent p-1 "
           onClick={toggleTheme}
         >
           <Sun className="text-white" />
         </button>
       ) : (
         <button
-          className="rounded-full bg-transparent p-1"
+          className="transition rotate-0 rounded-full bg-transparent p-1"
           onClick={toggleTheme}
         >
           <Moon className="text-gray-800" />

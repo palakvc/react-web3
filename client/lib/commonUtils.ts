@@ -9,19 +9,20 @@ export function formatAddress(address: string = ""): string {
 export const toBlob = (file: File | null | undefined): string =>
   file ? URL.createObjectURL(file) : "";
 
-export function removeEmptyKeys(obj: any) {
-  let i;
+export const isFile = (file: any) => "File" in window && file instanceof File;
+
+export function removeEmptyKeys<T>(obj: T) {
+  console.log("in fx-->", obj);
+  let i: keyof T;
+  if (typeof obj !== "object") {
+    return;
+  }
   for (i in obj) {
-    if (
-      obj[i] === null ||
-      obj[i] === undefined ||
-      obj[i] === "" ||
-      obj[i] === "null"
-    ) {
+    if (obj[i] === null || obj[i] === undefined) {
       delete obj[i];
     } else if (
       typeof obj[i] === "object" &&
-      !obj[i].name &&
+      !isFile(obj[i]) &&
       !Array.isArray(obj[i])
     ) {
       const objValues = Object.values(obj[i]);
@@ -32,7 +33,7 @@ export function removeEmptyKeys(obj: any) {
         delete obj[i];
       } else removeEmptyKeys(obj[i]);
     } else {
-      if (!String(obj[i])) {
+      if (!String(obj[i]).trim() || String(obj[i]) === "null") {
         delete obj[i];
       }
     }

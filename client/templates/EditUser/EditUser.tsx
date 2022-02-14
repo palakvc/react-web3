@@ -47,9 +47,14 @@ function EditProfile(
   );
 
   React.useEffect(() => {
-    const fields = ["username", "email", "bio", "full_name"];
+    const fields: (keyof IEditProfile)[] = [
+      "username",
+      "email",
+      "bio",
+      "full_name",
+    ];
     fields.forEach((v) => {
-      setValue(v, user[v]);
+      setValue(v, user?.[v]);
     });
   }, [user, setValue]);
 
@@ -98,8 +103,9 @@ function EditProfile(
     delete payload.accessToken;
     delete payload.isLoggedIn;
     delete payload.id;
-    removeEmptyKeys(payload);
+    removeEmptyKeys<IEditProfile>(payload);
 
+    console.log("after ---->", payload);
     for (const [key, value] of Object.entries(payload)) {
       formData.append(key, value);
     }
@@ -124,8 +130,6 @@ function EditProfile(
       );
     }
   };
-
-  console.log("coverImage,profileImage", coverImage, profileImage);
 
   return (
     <div className="w-full flex flex-wrap justify-center items-center">
