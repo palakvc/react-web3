@@ -7,6 +7,7 @@ const nextConfig = {
       "www.hyperui.dev",
       "i.pravatar.cc",
       "192.168.1.117",
+      "cdn.pentas.io"
     ],
   },
 };

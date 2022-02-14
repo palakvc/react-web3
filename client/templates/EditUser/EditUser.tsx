@@ -171,12 +171,12 @@ function EditProfile(
           />
         </label>
         <button
-          className="p-4 rounded-full bg-gray-200 absolute right-12 bottom-12 dark:bg-gray-700 "
+          className="p-2 rounded-full bg-gray-200 absolute right-12 bottom-12 dark:bg-gray-700 "
           onClick={() => coverRef!.current!.click()}
         >
           <PencilIcon className="text-gray-600 dark:text-white" />
         </button>
-        <div className="absolute left-32 -bottom-16 w-96 h-96 bg-white dark:bg-black rounded-full p-1">
+        <div className="absolute left-32 -bottom-16 w-30 h-30 bg-white dark:bg-black rounded-full p-1">
           <div className="relative">
             <label htmlFor="profile-picture">
               <input
@@ -201,11 +201,11 @@ function EditProfile(
               alt="profile image"
               unoptimized={typeof profileImage !== "string"}
               className=" object-cover w-96 h-96 mx-auto rounded-full"
-              height={150}
-              width={150}
+              height={80}
+              width={80}
             />
             <button
-              className="p-4 rounded-full bg-gray-200 absolute right-12 bottom-0 dark:bg-gray-700"
+              className="p-2 rounded-full bg-gray-200 absolute right-0 bottom-0 dark:bg-gray-700"
               onClick={() => profilePicRef!.current!.click()}
             >
               <PencilIcon className="text-gray-600 dark:text-white" />

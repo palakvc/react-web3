@@ -52,10 +52,10 @@ export default function Layout({ children }: ILayoutProps) {
         />
       )} */}
       <Header />
-      <Toast />
-      <main>
-        <Container>{children}</Container>
-      </main>
+      {/* <main> */}
+      {/* <Container>{children}</Container> */}
+      {children}
+      {/* </main> */}
     </>
   );
 }
