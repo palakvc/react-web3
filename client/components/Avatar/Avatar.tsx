@@ -7,7 +7,7 @@ interface IAvatarProps {
   src?: string;
   className?: string;
   children?: React.ReactNode;
-  size?: "small" | "medium" | "large"
+  size?: "small" | "medium" | "large";
 }
 
 function Avatar(props: IAvatarProps) {
@@ -15,8 +15,13 @@ function Avatar(props: IAvatarProps) {
   return (
     <div
       className={clsx(
-        "mx-3 flex items-center justify-center h-10 w-10 rounded-full bg-white bg-gray-200 dark:bg-darkPrimary",
-        className, { "h-10 w-10": size === "small", "h-20 w-20": size === "medium", " ": size === "large", }
+        "mx-3 flex items-center justify-center h-10 w-10 rounded-full bg-white dark:bg-darkPrimary",
+        className,
+        {
+          "h-10 w-10": size === "small",
+          "h-20 w-20": size === "medium",
+          " ": size === "large",
+        }
       )}
     >
       {children ? (

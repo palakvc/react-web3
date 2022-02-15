@@ -30,6 +30,7 @@ body {
   padding: 0;
   margin: 0;
   background-color: var(--light-bg);
+  scroll-behavior: smooth;
   /* background-color: #f4f6fb; */
   /* font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif; */

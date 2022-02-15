@@ -16,7 +16,7 @@ Home.getLayout = function getLayout(page: JSX.Element) {
   return (
     <>
       <Header />
-      <Container>{page}</Container>
+      <>{page}</>
     </>
   );
 };

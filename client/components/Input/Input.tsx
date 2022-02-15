@@ -41,7 +41,7 @@ function Input(
         <input
           {...props}
           className={clsx(
-            "border border-gray-300 pr-10 dark:bg-darkPrimary dark:border placeholder-gray-500 rounded-32 text-gray-600 focus:z-10 p-2 outline-none focus:ring",
+            "border border-gray-300 pr-10 dark:bg-darkPrimary dark:border placeholder-gray-500 rounded-full text-gray-600 focus:z-10 p-2 outline-none focus:ring",
             { "ring ring-red-600": error },
             className && className
           )}

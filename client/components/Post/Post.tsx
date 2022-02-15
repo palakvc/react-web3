@@ -4,12 +4,11 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-
 type FeaturePost =
   | { isFeature: true; description: string }
   | { isFeature?: false; description?: string };
 
-type IPost = FeaturePost & {
+export type IPost = FeaturePost & {
   id: number;
   artist: { src: string; name: string };
   title: string;
@@ -37,12 +36,21 @@ function Post(props: IPost): JSX.Element {
   const { src: ownerProfileImage, name: ownerName } = owner;
   const { src: artistProfileImage, name: artistName } = artist;
   return (
-    <div className="border-t border-b sm:border border-white dark:border-black relative bg-white dark:bg-black sm:rounded-xl shadow-md overflow-hidden mx-auto sm:max-w-xl" key={id}>
-      <div className="flex inline-flex w-full">
+    <div
+      className="border-t border-b sm:border border-white dark:border-black relative bg-white dark:bg-black sm:rounded-xl shadow-md overflow-hidden mx-auto sm:max-w-xl"
+      key={id}
+    >
+      <div className="flex w-full">
         <a href="/" className="px-4 py-2 flex-1 group block">
           <div className="flex items-center transition duration-100 ease-in-out transform hover:scale-105">
             <div className="relative flex-shrink-0">
-              <Image src={artistProfileImage} alt="" height={40} width={40} className="inline-block object-cover h-10 w-10 rounded-full bg-gray-100 dark:bg-darkBg3" />
+              <Image
+                src={artistProfileImage}
+                alt=""
+                height={40}
+                width={40}
+                className="inline-block object-cover h-10 w-10 rounded-full bg-gray-100 dark:bg-darkBg3"
+              />
             </div>
             <div className="mx-3">
               <p className="text-sm text-primary dark:text-darkTextPrimary line-clamp-1 break-all">
@@ -51,20 +59,19 @@ function Post(props: IPost): JSX.Element {
             </div>
           </div>
         </a>
-        <div className="pr-4">
-          <div className="flex inline-flex h-full items-center transition duration-100 ease-in-out transform hover:scale-105">
-            <LikeIcon className="mr-1 w-5 h-full text-primary dark:text-darkTextPrimary" />
-          </div>
-          {" "}
-          {/* <span className="mt-[1px]">{likes}</span> */}
+        <div className="pr-4 text-primary dark:text-darkTextPrimary">
+          <div className="flex h-full items-center transition duration-100 ease-in-out transform hover:scale-105">
+            <LikeIcon className="mr-1 w-5 h-full " />
+            <span className="mt-1">{likes}</span>
+          </div>{" "}
         </div>
       </div>
-      <div className="group block w-full aspect-square bg-white dark:bg-darkBg2 focus:outline-none overflow-hidden">
+      <div className="group block w-full aspect-w-10 aspect-h-10 bg-white dark:bg-darkBg2 focus:outline-none overflow-hidden">
         <Image
           src={artSrc || defaultArt}
           alt="art"
-          width={415}
-          height={415}
+          layout="fill"
+          objectFit="cover"
         />
       </div>
       <div className="px-4 py-4">
@@ -79,11 +86,20 @@ function Post(props: IPost): JSX.Element {
         <a href="/" className="group block mt-4">
           <div className="flex items-center transition duration-100 ease-in-out transform hover:scale-105">
             <div className="relative flex-shrink-0">
-              <Image src={ownerProfileImage} alt="" height={40} width={40} className="inline-block object-cover h-10 w-10 rounded-full bg-gray-100 dark:bg-darkBg3" />
+              <Image
+                src={ownerProfileImage}
+                alt=""
+                height={40}
+                width={40}
+                className="inline-block object-cover h-10 w-10 rounded-full bg-gray-100 dark:bg-darkBg3"
+              />
             </div>
             <div className="mx-3">
               <p className="text-sm text-primary dark:text-darkTextPrimary line-clamp-1 break-all">
                 {ownerName}
+              </p>
+              <p className="text-sm text-secondary dark:text-darkTextSecondary ">
+                Owner
               </p>
             </div>
           </div>

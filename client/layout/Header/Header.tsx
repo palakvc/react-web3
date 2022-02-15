@@ -41,7 +41,7 @@ const navItems: navItems[] = [
   },
   {
     title: "Spotlight",
-    href: "/",
+    href: "#spotlight",
   },
   {
     title: "Blog",
