@@ -14,7 +14,7 @@ function UserProfile(): JSX.Element {
     return (
         <>
             <div className="h-[192px]">
-                <img src={"https://cdn.pentas.io/next-s3-uploads/8cc9b93e-f75a-48c1-b3c0-d86a27761b92/batik.jpg"} alt="" height={192} className="w-full h-full object-cover" />
+                <img src={"https://cdn.pentas.io/next-s3-uploads/8cc9b93e-f75a-48c1-b3c0-d86a27761b92/batik.jpg"} alt="Use Logo" height={192} className="w-full h-full object-cover" />
             </div>
             <div className="flex-grow -mt-20 container max-w-screen-2xl mx-auto sm:px-6 lg:px-8">
                 <div className="px-4 sm:px-0 lg:grid lg:grid-cols-3 lg:gap-12">
