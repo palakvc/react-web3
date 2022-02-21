@@ -105,7 +105,6 @@ function EditProfile(
     delete payload.id;
     removeEmptyKeys<IEditProfile>(payload);
 
-    console.log("after ---->", payload);
     for (const [key, value] of Object.entries(payload)) {
       formData.append(key, value);
     }
@@ -171,13 +170,13 @@ function EditProfile(
           />
         </label>
         <button
-          className="p-2 rounded-full bg-gray-200 absolute right-12 bottom-12 dark:bg-gray-700 "
+          className="p-2 rounded-full bg-gray-200 absolute right-8 bottom-4 dark:bg-gray-700 "
           onClick={() => coverRef!.current!.click()}
         >
           <PencilIcon className="text-gray-600 dark:text-white" />
         </button>
-        <div className="absolute left-32 -bottom-16 w-30 h-30 bg-white dark:bg-black rounded-full p-1">
-          <div className="relative">
+        <div className="absolute left-16 -bottom-8 w-36 h-36 bg-white dark:bg-black rounded-full p-1">
+          <div className="w-full h-full relative">
             <label htmlFor="profile-picture">
               <input
                 accept="image/*"
@@ -200,9 +199,9 @@ function EditProfile(
               }
               alt="profile image"
               unoptimized={typeof profileImage !== "string"}
-              className=" object-cover w-96 h-96 mx-auto rounded-full"
-              height={80}
-              width={80}
+              className="rounded-full"
+              layout="fill"
+              objectFit="cover"
             />
             <button
               className="p-2 rounded-full bg-gray-200 absolute right-0 bottom-0 dark:bg-gray-700"
@@ -213,10 +212,10 @@ function EditProfile(
           </div>
         </div>
       </div>
-      <div id="profile-section" className=" mt-12 w-full">
+      <div id="profile-section" className="mt-4 w-full">
         <form
           onSubmit={handleSubmit(onSubmit)}
-          className=" shadow-lg bg-white dark:bg-darkBg2 mx-auto p-16 rounded-lg mt-8 mb-0 space-y-4 "
+          className=" shadow-lg bg-white dark:bg-darkBg2 mx-auto p-8 rounded-lg mt-8 mb-0 space-y-4 "
         >
           <Input
             type="text"

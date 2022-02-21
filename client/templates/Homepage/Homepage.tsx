@@ -82,6 +82,7 @@ function Homepage() {
             ))}
           </ul>
         </div>
+
         <div className="relative max-w-screen-2xl py-12 mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-12">
           <div className="px-4 sm:px-6 lg:px-8 sm:col-span-1 lg:col-span-2 my-auto">
             <h3 className="text-primary dark:text-darkTextPrimary text-4xl lg:text-5xl font-bold">
@@ -162,7 +163,7 @@ function Homepage() {
 
       <div className="container max-w-screen-2xl py-12 mx-auto sm:px-6 lg:px-8">
         <div className="px-4 sm:px-0">
-          <h1 className="text-textPrimary dark:text-darkTextPrimary text-left text-4xl lg:text-5xl font-bold">
+          <h1 className="text-primary dark:text-darkTextPrimary text-left text-4xl lg:text-5xl font-bold">
             Featured Creators
           </h1>
         </div>
@@ -186,7 +187,7 @@ function Homepage() {
 
       <div className="container max-w-screen-2xl py-12 mx-auto sm:px-6 lg:px-8">
         <div className="px-4 sm:px-0">
-          <h1 className="text-textPrimary dark:text-darkTextPrimary text-left text-4xl lg:text-5xl font-bold">
+          <h1 className="text-primary dark:text-darkTextPrimary text-left text-4xl lg:text-5xl font-bold">
             Featured Artworks
           </h1>
         </div>

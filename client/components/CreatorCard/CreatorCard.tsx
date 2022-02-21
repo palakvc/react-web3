@@ -36,7 +36,7 @@ function CreatorCard(props: ICreatorCardProps) {
       >
         <Avatar src={profileImage} size="medium" className="mx-auto " />
         {/* <Image className="w-24 h-24 mx-auto object-cover border-white dark:border-darkBg2 border-8 rounded-full overflow-hidden bg-gray-100 dark:bg-darkBg3" src="https://i.pravatar.cc/300" alt="" width={96} height={96} /> */}
-        <div className="text-textPrimary dark:text-darkTextPrimary mt-2 font-bold mx-2">
+        <div className="text-primary dark:text-darkTextPrimary mt-2 font-bold mx-2">
           {name}
         </div>
         <div className="text-sm my-1 text-secondary dark:text-darkTextSecondary">

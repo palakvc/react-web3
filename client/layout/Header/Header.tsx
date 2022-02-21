@@ -41,7 +41,7 @@ const navItems: navItems[] = [
   },
   {
     title: "Spotlight",
-    href: "#spotlight",
+    href: "/#spotlight",
   },
   {
     title: "Blog",
@@ -292,7 +292,7 @@ function Header() {
                     {account_id && (
                       <div
                         className={
-                          "font-medium flex items-center px-4 py-3 border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-gray-100 select-none"
+                          "font-semibold flex items-center px-4 py-3 border-gray-300 dark:border-gray-700 rounded-lg text-gray-900 dark:text-gray-100 select-none"
                         }
                       >
                         {formatAddress(account_id)}
@@ -302,7 +302,7 @@ function Header() {
                       <div
                         key={title}
                         className={
-                          "flex items-center px-4 py-3 border-gray-300 dark:border-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer text-gray-600 dark:text-gray-500 dark:hover:bg-gray-900 dark:hover:text-gray-300 select-none"
+                          "flex items-center px-4 py-3 border-gray-300 dark:border-gray-700 hover:bg-gray-100 rounded-lg cursor-pointer text-gray-600 dark:text-gray-500 dark:hover:bg-gray-800 dark:hover:text-gray-300 select-none"
                         }
                         onClick={() => {
                           fx ? fx() : router.push(href);

@@ -19,16 +19,15 @@ function Spotlight(props: ISpotlightProps) {
 
   //split the description by paragraphs
   const descriptionArray = description.split(/(?:\n){2,}/);
-  console.log("descriptionArray", descriptionArray);
   return (
     <section
       id="spotlight"
-      className="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-16"
+      className="relative max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 py-8 scroll-mt-14"
     >
       <p className="text-bluePrimary dark:text-darkBluePrimary font-bold">
         Spotlight
       </p>
-      <p className="font-bold text-textPrimary dark:text-darkTextPrimary text-4xl lg:text-5xl">
+      <p className="font-bold text-primary dark:text-darkTextPrimary text-4xl lg:text-5xl">
         {artistName}
       </p>
       <p className="font-bold text-secondary dark:text-darkTextSecondary">

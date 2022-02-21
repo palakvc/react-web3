@@ -109,7 +109,7 @@ function Post(props: IPost): JSX.Element {
         <Avatar src={ownerProfileImage} />
         {ownerName}
       </div> */}
-      <button className="transition duration-100 ease-in-out w-full h-12 items-center px-4 py-2 text-base font-bold bg-gray-300 text-gray-800 dark:text-gray-400 dark:bg-darkBg2 transform hover:scale-105 focus:outline-none focus:ring-0```">
+      <button className="transition duration-100 ease-in-out w-full h-12 items-center px-4 py-2 text-base font-bold bg-gray-100 text-gray-800 dark:text-gray-400 dark:bg-darkBg2 transform hover:scale-105 focus:outline-none focus:ring-0```">
         Buy for ${price}
       </button>
     </div>

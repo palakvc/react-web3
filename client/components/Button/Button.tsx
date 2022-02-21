@@ -13,7 +13,7 @@ function Button(
     <button
       {...props}
       className={clsx(
-        `text-gray-900 dark:text-gray-200 border border-gray-300 dark:border-gray-700 p-2 text-sm lg:text-base font-medium rounded-full`,
+        `text-primary dark:text-darkTextPrimary border border-gray-400 dark:border-gray-600 p-2 text-sm lg:text-base font-medium rounded-full`,
         {
           "dark:bg-darkPrimary dark:text-white": variant === "outlined",
         },
